@@ -160,6 +160,7 @@ def predict_stochastic(f, ins, batch_size=128, verbose=False):
     batches = make_batches(nb_sample, batch_size)
     index_array = np.arange(nb_sample)
     for batch_index, (batch_start, batch_end) in enumerate(batches):
+	print(batch_index, len(batches))
         batch_ids = index_array[batch_start:batch_end]
         ins_batch = slice_X(ins, batch_ids)
         batch_outs = f([ins_batch, 1])
