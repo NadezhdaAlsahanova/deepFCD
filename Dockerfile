@@ -62,4 +62,5 @@ COPY tests/ /tests/
 
 RUN sudo chmod -R 777 /app && sudo chmod +x /app/inference.py
 
-CMD ["python3"]
+# CMD ["python3"]
+ENTRYPOINT ["bash", "-c", "/app/entrypoint.sh"]
