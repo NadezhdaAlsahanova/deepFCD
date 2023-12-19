@@ -264,7 +264,7 @@ def prediction_sub(sub):
 if __name__ == '__main__':
     p = multiprocessing.Pool(processes=args.num_process)
     
-    for sub in [sub for sub os.listdir(args.dir) if "sub" in sub]:
+    for sub in [sub for sub in os.listdir(args.dir) if "sub" in sub]:
         print(sub)
         p.apply_async(prediction_sub, [sub])
     p.close()
