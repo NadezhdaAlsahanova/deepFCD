@@ -86,8 +86,6 @@ def prediction_sub(sub):
     
     args.t1_orig, args.t2_orig = args.t1, args.t2
     
-    cwd = os.path.realpath(os.path.dirname(__file__))
-    
     if bool(args.brain_masking):
         if options["cuda"].startswith("cuda"):
             args.use_gpu = True
@@ -128,10 +126,8 @@ def prediction_sub(sub):
     # --------------------------------------------------
     # test the cascaded model
     # --------------------------------------------------
-    # test_list = ['mcd_0468_1']
+
     test_list = [args.id]
-    # t1_file = sys.argv[3]
-    # t2_file = sys.argv[4]
     t1_file = args.t1
     t2_file = args.t2
     
@@ -212,6 +208,7 @@ def prediction_sub(sub):
 
 
 if __name__ == '__main__':
+    cwd = os.path.realpath(os.path.dirname(__file__))
     # deepFCD configuration
     K.set_image_dim_ordering("th")
     K.set_image_data_format("channels_first")  # TH dimension ordering in this code
