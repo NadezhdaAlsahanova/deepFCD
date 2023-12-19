@@ -35,7 +35,7 @@ options["cuda"] = sys.argv[5]
 if options["cuda"].startswith("cuda2"):
     os.environ[
         "THEANO_FLAGS"
-    ] = "mode=FAST_RUN,device=cuda2,floatX=float32,dnn.enabled=False"
+    ] = f"mode=FAST_RUN,device=cuda2,floatX=float32,dnn.enabled=False,compiledir={os.getpid()}"
 elif options["cuda"].startswith("cpu"):
     cores = str(multiprocessing.cpu_count() // 2)
     var = os.getenv("OMP_NUM_THREADS", cores)
