@@ -47,7 +47,7 @@ elif options["cuda"].startswith("cpu"):
             " should be a number, got '%s'." % var
         )
     # os.environ['openmp'] = 'True'
-    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cpu,openmp=True,floatX=float32"
+    os.environ["THEANO_FLAGS"] = f"mode=FAST_RUN,device=cpu,openmp=True,floatX=float32,compiledir={os.getpid()}"
 else:
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=False"
 logging.info(os.environ["THEANO_FLAGS"])
@@ -124,56 +124,6 @@ def prediction_sub(sub):
         ants.mask_image(t1, mask, level=1, binarize=False).to_filename(args.t1)
         ants.mask_image(t2, mask, level=1, binarize=False).to_filename(args.t2)
     
-    # deepFCD configuration
-    K.set_image_dim_ordering("th")
-    K.set_image_data_format("channels_first")  # TH dimension ordering in this code
-    
-    options["parallel_gpu"] = False
-    modalities = ["T1", "FLAIR"]
-    x_names = options["x_names"]
-    
-    # seed = options['seed']
-    options["dropout_mc"] = True
-    options["batch_size"] = 350000
-    options["mini_batch_size"] = 2048
-    options["load_checkpoint_1"] = True
-    options["load_checkpoint_2"] = True
-    
-    # trained model weights based on 148 histologically-verified FCD subjects
-    options["test_folder"] = args.dir
-    options["weight_paths"] = os.path.join(cwd, "weights")
-    options["experiment"] = "noel_deepFCD_dropoutMC"
-    logging.info("experiment: {}".format(options["experiment"]))
-    spt.setproctitle(options["experiment"])
-    
-    # --------------------------------------------------
-    # initialize the CNN
-    # --------------------------------------------------
-    # initialize empty model
-    model = None
-    # initialize the CNN architecture
-    model = off_the_shelf_model(options)
-    
-    load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our1.h5"
-    )
-    logging.info(
-        "loading DNN1, model[0]: {} exists".format(load_weights)
-    ) if os.path.isfile(load_weights) else sys.exit(
-        "model[0]: {} doesn't exist".format(load_weights)
-    )
-    model[0] = load_model(load_weights)
-    
-    load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our2.h5"
-    )
-    logging.info(
-        "loading DNN2, model[1]: {} exists".format(load_weights)
-    ) if os.path.isfile(load_weights) else sys.exit(
-        "model[1]: {} doesn't exist".format(load_weights)
-    )
-    model[1] = load_model(load_weights)
-    logging.info(model[1].summary())
     
     # --------------------------------------------------
     # test the cascaded model
@@ -262,6 +212,57 @@ def prediction_sub(sub):
 
 
 if __name__ == '__main__':
+    # deepFCD configuration
+    K.set_image_dim_ordering("th")
+    K.set_image_data_format("channels_first")  # TH dimension ordering in this code
+    
+    options["parallel_gpu"] = False
+    modalities = ["T1", "FLAIR"]
+    x_names = options["x_names"]
+    
+    # seed = options['seed']
+    options["dropout_mc"] = True
+    options["batch_size"] = 350000
+    options["mini_batch_size"] = 2048
+    options["load_checkpoint_1"] = True
+    options["load_checkpoint_2"] = True
+    
+    # trained model weights based on 148 histologically-verified FCD subjects
+    options["test_folder"] = args.dir
+    options["weight_paths"] = os.path.join(cwd, "weights")
+    options["experiment"] = "noel_deepFCD_dropoutMC"
+    logging.info("experiment: {}".format(options["experiment"]))
+    spt.setproctitle(options["experiment"])
+    
+    # --------------------------------------------------
+    # initialize the CNN
+    # --------------------------------------------------
+    # initialize empty model
+    model = None
+    # initialize the CNN architecture
+    model = off_the_shelf_model(options)
+    
+    load_weights = os.path.join(
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our1.h5"
+    )
+    logging.info(
+        "loading DNN1, model[0]: {} exists".format(load_weights)
+    ) if os.path.isfile(load_weights) else sys.exit(
+        "model[0]: {} doesn't exist".format(load_weights)
+    )
+    model[0] = load_model(load_weights)
+    
+    load_weights = os.path.join(
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our2.h5"
+    )
+    logging.info(
+        "loading DNN2, model[1]: {} exists".format(load_weights)
+    ) if os.path.isfile(load_weights) else sys.exit(
+        "model[1]: {} doesn't exist".format(load_weights)
+    )
+    model[1] = load_model(load_weights)
+    logging.info(model[1].summary())
+
     p = multiprocessing.Pool(processes=args.num_process)
     
     for sub in [sub for sub in os.listdir(args.dir) if "sub" in sub]:
