@@ -71,9 +71,10 @@ args.num_process = int(sys.argv[4])
 
 def prediction_sub(sub):        
     args.id = sub
-    args.t1_fname = f'{sub}_t1_brain-final.nii.gz'
-    args.t2_fname = f'{sub}_fl_brain-final.nii.gz'
-    
+    # args.t1_fname = f'{sub}_t1_brain-final.nii.gz'
+    # args.t2_fname = f'{sub}_fl_brain-final.nii.gz'
+    args.t1_fname = f'anat/{sub}_acq-T1MprageSagP2IsoOrig_T1w.nii.gz'
+    args.t2_fname = f'anat/{sub}_acq-T2SpaceDaFlCorP2IsoOrig_FLAIR.nii.gz'
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     
@@ -262,7 +263,7 @@ if __name__ == '__main__':
 
     p = multiprocessing.Pool(processes=args.num_process)
     
-    for sub in [sub for sub in os.listdir(args.dir) if "sub" in sub]:
+    for sub in ['sub-76']:#[sub for sub in os.listdir(args.dir) if "sub" in sub]:
         print(sub)
         p.apply_async(prediction_sub, [sub])
     p.close()
