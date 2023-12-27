@@ -53,7 +53,8 @@ from utils.metrics import *
 import multiprocessing
 
 
-def prediction_sub(intput_dir,output_dir):   
+def prediction_sub(intput_dir,output_dir):  
+    print(os.listdir(os.path.join(args.dir, args.id))) 
     args.t1_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
     args.t2_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
     if not os.path.isabs(args.dir):
