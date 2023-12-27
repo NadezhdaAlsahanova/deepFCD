@@ -200,6 +200,8 @@ if __name__ == '__main__':
     args.brain_masking = 1
     args.preprocess = 1
     args.id = os.listdir(args.dir)[0]
+    print(os.listdir(os.path.join(args.dir)))
+    print(args.id)
     
     cwd = os.path.realpath(os.path.dirname(__file__))
     # deepFCD configuration
