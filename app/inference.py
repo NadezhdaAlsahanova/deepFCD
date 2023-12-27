@@ -69,10 +69,7 @@ def prediction_sub(intput_dir,output_dir):
     args.t1_orig, args.t2_orig = args.t1, args.t2
     
     if bool(args.brain_masking):
-        if options["cuda"].startswith("cuda"):
-            args.use_gpu = True
-        else:
-            args.use_gpu = False
+        args.use_gpu = False
         # MRI pre-processing configuration
         args.output_suffix = "_brain_final.nii.gz"
     
