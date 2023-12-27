@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import warnings
+import re
 
 from mo_dots import Data
 
