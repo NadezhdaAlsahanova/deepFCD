@@ -202,6 +202,7 @@ if __name__ == '__main__':
     args.id = os.listdir(args.dir)[0]
     print(os.listdir(os.path.join(args.dir)))
     print(args.id)
+    print(os.listdir(os.path.join(args.dir, args.id)))
     
     cwd = os.path.realpath(os.path.dirname(__file__))
     # deepFCD configuration
