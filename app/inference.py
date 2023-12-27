@@ -54,9 +54,8 @@ import multiprocessing
 
 
 def prediction_sub(intput_dir,output_dir):  
-    print(os.listdir(os.path.join(args.dir, args.id))) 
-    args.t1_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
-    args.t2_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
+    args.t1_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_.*_T1w.nii.gz', str(i))][0])
+    args.t2_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_.*_FLAIR.nii.gz', str(i))][0])
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     
@@ -200,9 +199,6 @@ if __name__ == '__main__':
     args.brain_masking = 1
     args.preprocess = 1
     args.id = os.listdir(args.dir)[0]
-    print(os.listdir(os.path.join(args.dir)))
-    print(args.id)
-    print(os.listdir(os.path.join(args.dir, args.id)))
     
     cwd = os.path.realpath(os.path.dirname(__file__))
     # deepFCD configuration
