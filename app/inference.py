@@ -53,11 +53,6 @@ import multiprocessing
 
 
 def prediction_sub(intput_dir,output_dir):    
-    args = Data()
-    args.dir = intput_dir
-    args.brain_masking = 1
-    args.preprocess = 1
-    args.id = os.listdir(args.dir)[0]
     args.t1_fname = str([i for i in series_path if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
     args.t2_fname = str([i for i in series_path if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
     if not os.path.isabs(args.dir):
@@ -195,6 +190,15 @@ def prediction_sub(intput_dir,output_dir):
 
 
 if __name__ == '__main__':
+    intput_dir = '/input'
+    output_dir = '/output'
+    
+    args = Data()
+    args.dir = intput_dir
+    args.brain_masking = 1
+    args.preprocess = 1
+    args.id = os.listdir(args.dir)[0]
+    
     cwd = os.path.realpath(os.path.dirname(__file__))
     # deepFCD configuration
     K.set_image_dim_ordering("th")
@@ -254,8 +258,5 @@ if __name__ == '__main__':
     #     p.apply_async(prediction_sub, [sub])
     # p.close()
     # p.join()
-
-    intput_dir = '/input'
-    output_dir = '/output'
 
     prediction_sub(intput_dir,output_dir)
