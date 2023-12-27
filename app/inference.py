@@ -73,8 +73,8 @@ def prediction_sub(sub):
     args.id = sub
     # args.t1_fname = f'{sub}_t1_brain-final.nii.gz'
     # args.t2_fname = f'{sub}_fl_brain-final.nii.gz'
-    args.t1_fname = f'{sub}_acq-T1MprageSagP2IsoOrig_T1w.nii.gz'
-    args.t2_fname = f'{sub}_acq-T2SpaceDaFlCorP2IsoOrig_FLAIR.nii.gz'
+    args.t1_fname = f'{sub}_acq-T1MprageSagP2Iso_T1w.nii.gz'
+    args.t2_fname = f'{sub}_acq-T2SpaceDaFlCorIso_FLAIR.nii.gz'
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     
