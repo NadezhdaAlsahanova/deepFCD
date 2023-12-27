@@ -54,8 +54,8 @@ import multiprocessing
 
 
 def prediction_sub(intput_dir,output_dir):   
-    args.t1_fname = str([i for i in os.path.join(args.dir, args.id) if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
-    args.t2_fname = str([i for i in os.path.join(args.dir, args.id) if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
+    args.t1_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
+    args.t2_fname = str([i for i in os.listdir(os.path.join(args.dir, args.id)) if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     
