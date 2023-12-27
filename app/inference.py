@@ -80,7 +80,7 @@ def prediction_sub(intput_dir,output_dir):
                 args.id,
                 args.t1,
                 args.t2,
-                args.outdir,
+                output_dir,
                 bool2str(args.preprocess),
                 bool2str(args.use_gpu),
             ]
