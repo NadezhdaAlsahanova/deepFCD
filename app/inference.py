@@ -29,27 +29,18 @@ logging.basicConfig(
 
 os.environ["KERAS_BACKEND"] = "theano"
 
-# GPU/CPU options
-options["cuda"] = sys.argv[5]
-# cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 or 2
-if options["cuda"].startswith("cuda2"):
-    os.environ[
-        "THEANO_FLAGS"
-    ] = f"mode=FAST_RUN,device=cuda2,floatX=float32,dnn.enabled=False,compiledir={os.getpid()}"
-elif options["cuda"].startswith("cpu"):
-    cores = str(multiprocessing.cpu_count() // 2)
-    var = os.getenv("OMP_NUM_THREADS", cores)
-    try:
-        logging.info("# of threads initialized: {}".format(int(var)))
-    except ValueError:
-        raise TypeError(
-            "The environment variable OMP_NUM_THREADS"
-            " should be a number, got '%s'." % var
-        )
-    # os.environ['openmp'] = 'True'
-    os.environ["THEANO_FLAGS"] = f"mode=FAST_RUN,device=cpu,openmp=True,floatX=float32,compiledir={os.getpid()}"
-else:
-    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=False"
+cores = str(multiprocessing.cpu_count() // 2)
+var = os.getenv("OMP_NUM_THREADS", cores)
+try:
+    logging.info("# of threads initialized: {}".format(int(var)))
+except ValueError:
+    raise TypeError(
+        "The environment variable OMP_NUM_THREADS"
+        " should be a number, got '%s'." % var
+    )
+# os.environ['openmp'] = 'True'
+os.environ["THEANO_FLAGS"] = f"mode=FAST_RUN,device=cpu,openmp=True,floatX=float32,compiledir={os.getpid()}"
+
 logging.info(os.environ["THEANO_FLAGS"])
 
 from keras import backend as K
@@ -60,30 +51,24 @@ from utils.base import *
 from utils.metrics import *
 import multiprocessing
 
-# configuration
-args = Data()
-args.dir = sys.argv[1]
-args.brain_masking = int(sys.argv[2])
-# set to True or any non-zero value for brain extraction or skull-removal, False otherwise
-args.preprocess = int(sys.argv[3])
-args.num_process = int(sys.argv[4])
 
-
-def prediction_sub(sub):        
-    args.id = sub
-    # args.t1_fname = f'{sub}_t1_brain-final.nii.gz'
-    # args.t2_fname = f'{sub}_fl_brain-final.nii.gz'
-    args.t1_fname = f'{sub}_acq-T1MprageSagP2Iso_T1w.nii.gz'
-    args.t2_fname = f'{sub}_acq-T2SpaceDaFlCorIso_FLAIR.nii.gz'
+def prediction_sub(intput_dir,output_dir):    
+    args = Data()
+    args.dir = intput_dir
+    args.brain_masking = 1
+    args.preprocess = 1
+    args.id = os.listdir(args.dir)[0]
+    args.t1_fname = str([i for i in series_path if re.findall(f'^{args.id}_*_T1w.nii.gz', str(i))][0])
+    args.t2_fname = str([i for i in series_path if re.findall(f'^{args.id}_*_FLAIR.nii.gz', str(i))][0])
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     
     
     # co-register T1 and T2 images to MNI152 space and N3 correction before brain extraction (True/False)
-    args.outdir = os.path.join(args.dir, args.id)
+    args.outdir = os.path.join(output_dir, args.id)
     
-    args.t1 = os.path.join(args.outdir, args.t1_fname)
-    args.t2 = os.path.join(args.outdir, args.t2_fname)
+    args.t1 = os.path.join(args.dir, args.id, args.t1_fname)
+    args.t2 = os.path.join(args.dir, args.id, args.t2_fname)
     
     args.t1_orig, args.t2_orig = args.t1, args.t2
     
@@ -100,9 +85,9 @@ def prediction_sub(sub):
             [
                 preprocess_sh,
                 args.id,
-                args.t1_fname,
-                args.t2_fname,
-                args.dir,
+                args.t1,
+                args.t2,
+                args.outdir,
                 bool2str(args.preprocess),
                 bool2str(args.use_gpu),
             ]
@@ -199,6 +184,7 @@ def prediction_sub(sub):
             transforms=transforms,
             orig_files=orig_files,
             invert_xfrm=True,
+            uncertainty=False,
         )
     
         end = time.time()
@@ -261,10 +247,15 @@ if __name__ == '__main__':
     model[1] = load_model(load_weights)
     logging.info(model[1].summary())
 
-    p = multiprocessing.Pool(processes=args.num_process)
+    # p = multiprocessing.Pool(processes=args.num_process)
     
-    for sub in ['sub-76']:#[sub for sub in os.listdir(args.dir) if "sub" in sub]:
-        print(sub)
-        p.apply_async(prediction_sub, [sub])
-    p.close()
-    p.join()
+    # for sub in ['sub-76']:#[sub for sub in os.listdir(args.dir) if "sub" in sub]:
+    #     print(sub)
+    #     p.apply_async(prediction_sub, [sub])
+    # p.close()
+    # p.join()
+
+    intput_dir = '/input'
+    output_dir = '/output'
+
+    prediction_sub(intput_dir,output_dir)
