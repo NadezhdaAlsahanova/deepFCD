@@ -214,7 +214,7 @@ if __name__ == '__main__':
     options["load_checkpoint_2"] = True
     
     # trained model weights based on 148 histologically-verified FCD subjects
-    options["test_folder"] = args.dir
+    options["test_folder"] = output_dir
     options["weight_paths"] = os.path.join(cwd, "weights")
     options["experiment"] = "noel_deepFCD_dropoutMC"
     logging.info("experiment: {}".format(options["experiment"]))
@@ -248,13 +248,5 @@ if __name__ == '__main__':
     )
     model[1] = load_model(load_weights)
     logging.info(model[1].summary())
-
-    # p = multiprocessing.Pool(processes=args.num_process)
-    
-    # for sub in ['sub-76']:#[sub for sub in os.listdir(args.dir) if "sub" in sub]:
-    #     print(sub)
-    #     p.apply_async(prediction_sub, [sub])
-    # p.close()
-    # p.join()
 
     prediction_sub(intput_dir,output_dir)
