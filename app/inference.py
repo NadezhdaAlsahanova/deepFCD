@@ -188,8 +188,8 @@ def prediction_sub(intput_dir,output_dir):
 
 
 if __name__ == '__main__':
-    intput_dir = '/input'
-    output_dir = '/output'
+    intput_dir = os.environ.get('INPUT')
+    output_dir = os.environ.get('OUTPUT')
     
     args = Data()
     args.dir = intput_dir
