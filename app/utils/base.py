@@ -420,6 +420,7 @@ def test_model(
             uncertainty=uncertainty,
             T=20,
         )
+        pred_var_0_img = None
 
     pred_mean_0_img = nifti2ants(pred_mean_0, affine=header.get_qform(), header=header)
 
@@ -462,6 +463,7 @@ def test_model(
             T=50,
             candidate_mask=pred_mean_0 > threshold,
         )
+        pred_var_1_img = None
 
     pred_mean_1_img = nifti2ants(pred_mean_1, affine=header.get_qform(), header=header)
 
