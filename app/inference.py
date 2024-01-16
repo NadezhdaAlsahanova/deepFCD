@@ -136,10 +136,12 @@ def prediction_sub(intput_dir,output_dir):
         f: {m: n for m, n in zip(modalities, transform_files)} for f in test_list
     }
     # test_data = {f: {m: os.path.join(options['test_folder'], f, n) for m, n in zip(modalities, files)} for f in test_list}
-    
     for _, scan in enumerate(
         tqdm(test_list, desc="serving predictions using the trained model", colour="blue")
     ):
+        
+        if not os.path.exists(os.path.join(options["test_folder"], scan)):
+            os.mkdir(os.path.join(options["test_folder"], scan))
         t_data = {}
         t_data[scan] = test_data[scan]
         transforms = {}
