@@ -193,8 +193,8 @@ if __name__ == '__main__':
     
     args = Data()
     args.dir = intput_dir
-    args.brain_masking = 1
-    args.preprocess = 1
+    args.brain_masking = 0
+    args.preprocess = 0
     args.id = os.listdir(args.dir)[0]
     
     cwd = os.path.realpath(os.path.dirname(__file__))
