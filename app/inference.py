@@ -83,7 +83,7 @@ def prediction_sub(model, args):
     start = time.time()
     logging.info("\n")
     logging.info("-" * 70)
-    logging.info("testing the model for scan: {}".format(scan))
+    logging.info("testing the model for scan: {}".format(args.id))
     logging.info("-" * 70)
 
     test_model(
@@ -101,7 +101,7 @@ def prediction_sub(model, args):
 
     os.remove(args.t1)
     os.remove(args.t2)
-    os.remove(os.path.join(options["pred_folder"], scan + "_prob_mean_0.nii.gz"))
+    os.remove(os.path.join(options["pred_folder"], args.id + "_prob_mean_0.nii.gz"))
 
 
 
