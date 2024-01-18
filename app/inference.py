@@ -63,12 +63,14 @@ def prediction_sub(model, args):
     t1 = nib.load(os.path.join(args.dir, args.id, args.t1_fname)) 
     t2 = nib.load(os.path.join(args.dir, args.id, args.t2_fname)) 
     mask = nib.load(args.mask_path).get_fdata() < 0.5
+    t1_data = t1.get_fdata()*mask
+    t2_data = t2.get_fdata()*mask
     
     args.t1 = os.path.join(args.outdir, args.t1_fname)
     args.t2 = os.path.join(args.outdir, args.t2_fname)
 
-    nib.save(nib.Nifti1Image(t1.get_fdata()*mask, t1.affine), args.t1)  
-    nib.save(nib.Nifti1Image(t2.get_fdata()*mask, t2.affine), args.t2) 
+    nib.save(nib.Nifti1Image(t1_data * 100 / t1_data.max(), t1.affine), args.t1)  
+    nib.save(nib.Nifti1Image(t2_data * 100 / t2_data.max(), t2.affine), args.t2) 
 
     test_data = {
         args.id: {
