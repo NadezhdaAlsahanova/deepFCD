@@ -103,9 +103,7 @@ def prediction_sub(model, args):
 
     os.remove(args.t1)
     os.remove(args.t2)
-    os.remove(os.path.join(options["pred_folder"], args.id + "_prob_mean_0.nii.gz"))
-
-
+    os.remove(os.path.join(options["pred_folder"], args.id + "_" + options["experiment"] + "_prob_mean_0.nii.gz"))
 
 
 if __name__ == '__main__':
