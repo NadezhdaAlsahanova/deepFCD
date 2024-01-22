@@ -82,12 +82,11 @@ def inference(args):
     options["load_checkpoint_2"] = True
 
     # trained model weights based on 148 histologically-verified FCD subjects
+    cwd = os.path.realpath(os.path.dirname(__file__))
     options["weight_paths"] = os.path.join(cwd, "weights")
     options["experiment"] = "noel_deepFCD_dropoutMC"
     logging.info("experiment: {}".format(options["experiment"]))
     spt.setproctitle(options["experiment"])
-    
-    cwd = os.path.realpath(os.path.dirname(__file__))
 
     # --------------------------------------------------
     # initialize the CNN
