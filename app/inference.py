@@ -97,7 +97,7 @@ def inference(args):
     model = off_the_shelf_model(options)
 
     load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_1.h5"
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our1.h5"
     )
     logging.info(
         "loading DNN1, model[0]: {} exists".format(load_weights)
@@ -107,7 +107,7 @@ def inference(args):
     model[0] = load_model(load_weights)
 
     load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_2.h5"
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our2.h5"
     )
     logging.info(
         "loading DNN2, model[1]: {} exists".format(load_weights)
