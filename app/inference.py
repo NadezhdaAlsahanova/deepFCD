@@ -86,6 +86,8 @@ def inference(args):
     options["experiment"] = "noel_deepFCD_dropoutMC"
     logging.info("experiment: {}".format(options["experiment"]))
     spt.setproctitle(options["experiment"])
+    
+    cwd = os.path.realpath(os.path.dirname(__file__))
 
     # --------------------------------------------------
     # initialize the CNN
