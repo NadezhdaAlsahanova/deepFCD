@@ -121,6 +121,7 @@ def inference(args):
     # test the cascaded model
     # --------------------------------------------------
     files = [args.t1, args.t2]
+    options["test_folder"] = args.outdir
 
     test_data = {
         args.id: {
@@ -129,7 +130,6 @@ def inference(args):
     }
 
     options["pred_folder"] = args.outdir
-    options["test_folder"] = args.outdir
 
     if not os.path.exists(options["pred_folder"]):
         os.mkdir(options["pred_folder"])
