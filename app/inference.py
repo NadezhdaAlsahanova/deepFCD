@@ -125,7 +125,7 @@ def inference(args):
 
     test_data = {
         args.id: {
-            m: os.path.join(options["test_folder"], f, n) for m, n in zip(modalities, files)
+            m: os.path.join(options["test_folder"], args.id, n) for m, n in zip(modalities, files)
         }
     }
 
