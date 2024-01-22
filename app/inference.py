@@ -4,7 +4,6 @@ import os
 import subprocess
 import sys
 import warnings
-import re
 
 from mo_dots import Data
 
@@ -37,10 +36,9 @@ except ValueError:
         "The environment variable OMP_NUM_THREADS"
         " should be a number, got '%s'." % var
     )
+# os.environ['openmp'] = 'True'
+os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cpu,openmp=True,floatX=float32"
 
-os.environ["THEANO_FLAGS"] = f"mode=FAST_RUN,device=cpu,openmp=True,floatX=float32,compiledir={os.getpid()}"
-
-logging.info(os.environ["THEANO_FLAGS"])
 
 from keras import backend as K
 from keras.models import load_model
@@ -48,16 +46,13 @@ from keras.models import load_model
 from models.noel_models_keras import *
 from utils.base import *
 from utils.metrics import *
-import multiprocessing
 
 
-def prediction_sub(model, args):  
+def inference(args):
     args.t1_fname = f'{args.id}_t1_brain-final.nii.gz'
     args.t2_fname = f'{args.id}_fl_brain-final.nii.gz'
-    
-    if not os.path.isabs(args.dir):
-        args.dir = os.path.abspath(args.dir)
-    
+
+    # our preprocessing:
     args.mask_path = os.path.join(args.dir, args.id, f'{args.id}_exclusive_mask.nii.gz')
 
     t1 = nib.load(os.path.join(args.dir, args.id, args.t1_fname)) 
@@ -72,14 +67,72 @@ def prediction_sub(model, args):
     nib.save(nib.Nifti1Image(t1_data * 100 / t1_data.max(), t1.affine), args.t1)  
     nib.save(nib.Nifti1Image(t2_data * 100 / t2_data.max(), t2.affine), args.t2) 
 
+    # deepFCD configuration
+    K.set_image_dim_ordering("th")
+    K.set_image_data_format("channels_first")  # TH dimension ordering in this code
+
+    options["parallel_gpu"] = False
+    modalities = ["T1", "FLAIR"]
+    x_names = options["x_names"]
+
+    options["dropout_mc"] = True
+    options["batch_size"] = 350000
+    options["mini_batch_size"] = 2048
+    options["load_checkpoint_1"] = True
+    options["load_checkpoint_2"] = True
+
+    # trained model weights based on 148 histologically-verified FCD subjects
+    options["weight_paths"] = os.path.join(cwd, "weights")
+    options["experiment"] = "noel_deepFCD_dropoutMC"
+    logging.info("experiment: {}".format(options["experiment"]))
+    spt.setproctitle(options["experiment"])
+
+    # --------------------------------------------------
+    # initialize the CNN
+    # --------------------------------------------------
+    # initialize empty model
+    model = None
+    # initialize the CNN architecture
+    model = off_the_shelf_model(options)
+
+    load_weights = os.path.join(
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_1.h5"
+    )
+    logging.info(
+        "loading DNN1, model[0]: {} exists".format(load_weights)
+    ) if os.path.isfile(load_weights) else sys.exit(
+        "model[0]: {} doesn't exist".format(load_weights)
+    )
+    model[0] = load_model(load_weights)
+
+    load_weights = os.path.join(
+        options["weight_paths"], "noel_deepFCD_dropoutMC_model_2.h5"
+    )
+    logging.info(
+        "loading DNN2, model[1]: {} exists".format(load_weights)
+    ) if os.path.isfile(load_weights) else sys.exit(
+        "model[1]: {} doesn't exist".format(load_weights)
+    )
+    model[1] = load_model(load_weights)
+    logging.info(model[1].summary())
+
+    # --------------------------------------------------
+    # test the cascaded model
+    # --------------------------------------------------
+    files = [args.t1, args.t2]
+
     test_data = {
         args.id: {
-            m: n for m, n in zip(modalities, [args.t1, args.t2])
+            m: os.path.join(options["test_folder"], f, n) for m, n in zip(modalities, files)
         }
     }
 
     options["pred_folder"] = args.outdir
     options["test_folder"] = args.outdir
+
+    if not os.path.exists(options["pred_folder"]):
+        os.mkdir(options["pred_folder"])
+
     options["test_scan"] = args.id
 
     start = time.time()
@@ -92,7 +145,7 @@ def prediction_sub(model, args):
         model,
         test_data,
         options,
-        uncertainty=False,
+        uncertainty=False
     )
 
     end = time.time()
@@ -107,62 +160,13 @@ def prediction_sub(model, args):
 
 
 if __name__ == '__main__':
-    intput_dir = os.environ.get('INPUT')
-    output_dir = os.environ.get('OUTPUT')
-    
     args = Data()
-    args.dir = intput_dir
-    args.id = os.listdir(args.dir)[0]
-    args.outdir = output_dir #os.path.join(output_dir, args.id)
-    
-    cwd = os.path.realpath(os.path.dirname(__file__))
-    # deepFCD configuration
-    K.set_image_dim_ordering("th")
-    K.set_image_data_format("channels_first")  # TH dimension ordering in this code
-    
-    options["parallel_gpu"] = False
-    modalities = ["T1", "FLAIR"]
-    x_names = options["x_names"]
-    
-    options["dropout_mc"] = True
-    options["batch_size"] = 350000
-    options["mini_batch_size"] = 2048
-    options["load_checkpoint_1"] = True
-    options["load_checkpoint_2"] = True
-    
-    options["test_folder"] = output_dir
-    options["weight_paths"] = os.path.join(cwd, "weights")
-    options["experiment"] = "noel_deepFCD_dropoutMC"
-    logging.info("experiment: {}".format(options["experiment"]))
-    spt.setproctitle(options["experiment"])
-    
-    # --------------------------------------------------
-    # initialize the CNN
-    # --------------------------------------------------
-    # initialize empty model
-    model = None
-    # initialize the CNN architecture
-    model = off_the_shelf_model(options)
-    
-    load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our1.h5"
-    )
-    logging.info(
-        "loading DNN1, model[0]: {} exists".format(load_weights)
-    ) if os.path.isfile(load_weights) else sys.exit(
-        "model[0]: {} doesn't exist".format(load_weights)
-    )
-    model[0] = load_model(load_weights)
-    
-    load_weights = os.path.join(
-        options["weight_paths"], "noel_deepFCD_dropoutMC_model_our2.h5"
-    )
-    logging.info(
-        "loading DNN2, model[1]: {} exists".format(load_weights)
-    ) if os.path.isfile(load_weights) else sys.exit(
-        "model[1]: {} doesn't exist".format(load_weights)
-    )
-    model[1] = load_model(load_weights)
-    logging.info(model[1].summary())
+    args.dir = os.environ.get('INPUT')
+    args.outdir = os.environ.get('OUTPUT')
 
-    prediction_sub(model, args)
+    args.id = os.listdir(args.dir)[0]
+
+    if not os.path.isabs(args.dir):
+        args.dir = os.path.abspath(args.dir)
+
+    inference(args)
