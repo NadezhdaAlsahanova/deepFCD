@@ -521,3 +521,75 @@ def get_patches(image, centers, patch_size=(16, 16, 16)):
         ]
         patches = [new_image[tuple(idx)] for idx in slices]
     return patches
+
+
+def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
+    """
+    get image patches of specified size based on a set of centers
+
+    inputs:
+    - mask: binary mask
+    - centers: list of tuples corresponding voxel coordinates (x,y,z) of selected patches
+    - patch_size: tuple containing 3D (p1, p2, p3)
+
+    output:
+    - list of tuples containing the (x,y,z) coordinate for each of the input voxels
+
+    # if the size is even-numberered, the patch will be centered
+    # if not, it will try to create an square almost centered.
+    # doing so allows pooling (max-pool, avg-pool, etc.) when using encoders/unets
+    """
+    patches = []
+    list_of_tuples = all([isinstance(center, tuple) for center in centers])
+    sizes_match = [len(center) == len(patch_size) for center in centers]
+
+    if list_of_tuples and sizes_match:
+        patch_half = tuple([idx // 2 for idx in patch_size])
+        new_centers = [map(add, center, patch_half) for center in centers]
+        padding = tuple((idx, size - idx) for idx, size in zip(patch_half, patch_size))
+        new_image = np.pad(image, padding, mode="constant", constant_values=0)
+        slices = [
+            [
+                slice(image.shape[0] - c_idx - p_idx, image.shape[0] - c_idx + (s_idx - p_idx))
+                for (c_idx, p_idx, s_idx) in zip(center, patch_half, patch_size)
+            ]
+            for center in new_centers
+        ]
+        patches = [new_image[tuple(idx)] for idx in slices]
+    return patches
+
+
+def get_smooth_patches(image, centers, patch_size=(16, 16, 16)):
+    """
+    get image patches of specified size based on a set of centers
+
+    inputs:
+    - mask: binary mask
+    - centers: list of tuples corresponding voxel coordinates (x,y,z) of selected patches
+    - patch_size: tuple containing 3D (p1, p2, p3)
+
+    output:
+    - list of tuples containing the (x,y,z) coordinate for each of the input voxels
+
+    # if the size is even-numberered, the patch will be centered
+    # if not, it will try to create an square almost centered.
+    # doing so allows pooling (max-pool, avg-pool, etc.) when using encoders/unets
+    """
+    patches = []
+    list_of_tuples = all([isinstance(center, tuple) for center in centers])
+    sizes_match = [len(center) == len(patch_size) for center in centers]
+
+    if list_of_tuples and sizes_match:
+        patch_half = tuple([idx // 2 for idx in patch_size])
+        new_centers = [map(add, center, patch_half) for center in centers]
+        padding = tuple((idx, size - idx) for idx, size in zip(patch_half, patch_size))
+        new_image = np.pad(image, padding, mode="constant", constant_values=0)
+        slices = [
+            [
+                slice(c_idx - p_idx*2, c_idx + (s_idx - p_idx)*2, 2)
+                for (c_idx, p_idx, s_idx) in zip(center, patch_half, patch_size)
+            ]
+            for center in new_centers
+        ]
+        patches = [new_image[tuple(idx)] for idx in slices]
+    return patches
