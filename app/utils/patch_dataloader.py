@@ -160,7 +160,6 @@ def predict_stochastic(f, ins, batch_size=128, verbose=False):
     batches = make_batches(nb_sample, batch_size)
     index_array = np.arange(nb_sample)
     for batch_index, (batch_start, batch_end) in enumerate(batches):
-        print(batch_index, len(batches))
         batch_ids = index_array[batch_start:batch_end]
         ins_batch = slice_X(ins, batch_ids)
         batch_outs = f([ins_batch, 1])
@@ -213,24 +212,26 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
 
     # extract patches and labels for each of the modalities
     data = []
-
-    for m in modalities:
-        x_data = [train_x_data[s][m] for s in scans]
-        y_data = [train_y_data[s] for s in scans]
-        if subcort_masks is not None:
-            submasks = [subcort_masks[s] for s in scans]
-            x_patches, y_patches = load_train_patches(
-                x_data, y_data, selected_voxels, options["patch_size"], submasks
-            )
-        else:
-            x_patches, y_patches = load_train_patches(
-                x_data,
-                y_data,
-                selected_voxels,
-                options["patch_size"],
-                subcort_masks=None,
-            )
-        data.append(x_patches)
+    
+    for patch_type in ['original', 'opposite', 'smooth']:
+        for m in modalities:
+            x_data = [train_x_data[s][m] for s in scans]
+            y_data = [train_y_data[s] for s in scans]
+            if subcort_masks is not None:
+                submasks = [subcort_masks[s] for s in scans]
+                x_patches, y_patches = load_train_patches(
+                    x_data, y_data, selected_voxels, options["patch_size"], submasks, patch_type
+                )
+            else:
+                x_patches, y_patches = load_train_patches(
+                    x_data,
+                    y_data,
+                    selected_voxels,
+                    options["patch_size"],
+                    subcort_masks=None,
+                    patch_type=patch_type
+                )
+            data.append(x_patches)
     # stack patches in channels [samples, channels, p1, p2, p3]
     X = np.stack(data, axis=1)
     Y = y_patches
@@ -305,6 +306,7 @@ def load_train_patches(
     selected_voxels,
     patch_size,
     subcort_masks=None,
+    patch_type='original',
     seed=666,
     datatype=np.float32,
 ):
@@ -353,11 +355,21 @@ def load_train_patches(
 
     # load all positive samples (lesional voxels) and the same number of random negatives samples
     np.random.seed(seed)
-
-    x_pos_patches = [
-        np.array(get_patches(image, centers, patch_size))
-        for image, centers in zip(images_norm, lesion_centers)
-    ]
+    if patch_type == 'original':
+        x_pos_patches = [
+            np.array(get_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, lesion_centers)
+        ]
+    elif patch_type == 'opposite':
+        x_pos_patches = [
+            np.array(get_opposite_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, lesion_centers)
+        ]
+    elif patch_type == 'smooth':
+        x_pos_patches = [
+            np.array(get_smooth_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, lesion_centers)
+        ]
     y_pos_patches = [
         np.array(get_patches(image, centers, patch_size))
         for image, centers in zip(lesion_masks, lesion_centers)
@@ -371,10 +383,22 @@ def load_train_patches(
     nolesion_small = [
         itemgetter(*idx)(centers) for centers, idx in zip(nolesion_centers, indices)
     ]
-    x_neg_patches = [
-        np.array(get_patches(image, centers, patch_size))
-        for image, centers in zip(images_norm, nolesion_small)
-    ]
+    if patch_type == 'original':
+        x_neg_patches = [
+            np.array(get_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, nolesion_small)
+        ]
+    elif patch_type == 'opposite':
+        x_neg_patches = [
+            np.array(get_opposite_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, nolesion_small)
+        ]
+    elif patch_type == 'smooth':
+        x_neg_patches = [
+            np.array(get_smooth_patches(image, centers, patch_size))
+            for image, centers in zip(images_norm, nolesion_small)
+        ]
+
     y_neg_patches = [
         np.array(get_patches(image, centers, patch_size))
         for image, centers in zip(lesion_masks, nolesion_small)
