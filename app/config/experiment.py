@@ -18,7 +18,7 @@ options['net_verbose'] = 11
 options['seed'] = 666
 
 options['nb_classes'] = 2
-options['channels'] = 2
+options['channels'] = 6
 options['base_filters'] = 48
 options['activation'] = 'relu'
 options['optimizer'] = 'Adadelta'
