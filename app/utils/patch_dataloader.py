@@ -439,7 +439,9 @@ def load_test_patches(
     patch_size,
     batch_size,
     threshold,
+    patch_types=['original', 'opposite', 'smooth'],
     voxel_candidates=None,
+    subcort_mask=None,
     datatype=np.float32,
 ):
     """
@@ -450,6 +452,7 @@ def load_test_patches(
     - x_data: list containing all subject image paths for a single modality
     - patch_size: tuple containing patch size, 3D (p1, p2, p3)
     - voxel_candidates: a binary mask containing voxels to select for testing
+    - subcort_mask: mask to exclude voxels
 
     intermediate:
     - selected_voxels: list where each element contains the subject binary mask for selected voxels [len(x), len(y), len(z)]
@@ -480,9 +483,10 @@ def load_test_patches(
     # use the binary mask to extract candidate voxels
     if voxel_candidates is None:
         flair_scans = [test_x_data[s]["FLAIR"] for s in scans]
+        submasks = [load_nii(name).get_data() for name in subcort_masks]
         selected_voxels = [
-            get_mask_voxels(mask)
-            for mask in select_training_voxels(flair_scans, threshold)
+            get_mask_voxels(np.logical_and(np.logical_not(submask), brain))
+            for submask, brain in zip(submasks, select_training_voxels(flair_scans, threshold))
         ][0]
     else:
         selected_voxels = get_mask_voxels(voxel_candidates)
@@ -491,8 +495,15 @@ def load_test_patches(
     for i in range(0, len(selected_voxels), batch_size):
         c_centers = selected_voxels[i : i + batch_size]
         X = []
-        for image_modality in images:
-            X.append(get_patches(image_modality[0], c_centers, patch_size))
+        for patch_type in patch_types:
+            for image_modality in images:
+                if patch_type == 'original':
+                    X.append(get_patches(image_modality[0], c_centers, patch_size))
+                elif patch_type == 'opposite':
+                    X.append(get_opposite_patches(image_modality[0], c_centers, patch_size))
+                elif patch_type == 'smooth':
+                    X.append(get_smooth_patches(image_modality[0], c_centers, patch_size))
+                
         yield np.stack(X, axis=1), c_centers
 
 
