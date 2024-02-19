@@ -340,7 +340,7 @@ def load_train_patches(
     if subcort_masks is not None:
         submasks = [load_nii(name).get_data() for name in subcort_masks]
         nolesion_masks = [
-            np.logical_and(np.logical_not(lesion), submask, brain)
+            np.logical_and(np.logical_not(lesion), np.logical_not(submask), brain)
             for lesion, submask, brain in zip(lesion_masks, submasks, selected_voxels)
         ]
     else:
