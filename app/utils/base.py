@@ -131,7 +131,7 @@ def model_callbacks(net_weights, net_model, net_logs, options, RAND):
     return early_stopping_monitor, model_checkpoint, csv_logger, json_logging_callback
 
 
-def train_model(model, train_x_data, train_y_data, options):
+def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
     """
     train the model using a cascade of two CNNs
 
@@ -206,7 +206,7 @@ def train_model(model, train_x_data, train_y_data, options):
             )
         else:
             X, labels = load_training_data(
-                train_x_data, train_y_data, options, subcort_masks=None
+                train_x_data, train_y_data, options, subcort_masks=subcort_masks
             )
             y = to_categorical(labels, num_classes=2)
             if options["save_as_hdf5"]:
@@ -295,7 +295,7 @@ def train_model(model, train_x_data, train_y_data, options):
                     train_y_data,
                     options,
                     model=model[0],
-                    subcort_masks=None,
+                    subcort_masks=subcort_masks,
                 )
                 y = to_categorical(labels, num_classes=2)
                 model[1].fit(
@@ -348,7 +348,7 @@ def train_model(model, train_x_data, train_y_data, options):
                     train_y_data,
                     options,
                     model=model[0],
-                    subcort_masks=None,
+                    subcort_masks=subcort_masks,
                 )
                 y = to_categorical(labels, num_classes=2)
                 if options["save_as_hdf5"]:
@@ -390,6 +390,7 @@ def test_model(
     transforms=None,
     orig_files=None,
     invert_xfrm=True,
+    subcort_masks=None
 ):
     threshold = options["th_dnn_train_2"]
     scan = options["test_scan"] + "_"
@@ -577,6 +578,7 @@ def test_scan(
     save_nifti=False,
     uncertainty=False,
     candidate_mask=None,
+    subcort_mask=None,
     T=20,
 ):
     """
@@ -615,6 +617,7 @@ def test_scan(
         options["batch_size"],
         options["min_th"],
         candidate_mask,
+        subcort_mask
     ):
         if uncertainty:
             # predict uncertainty
