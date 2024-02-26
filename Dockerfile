@@ -55,8 +55,8 @@ COPY app/requirements.txt /app/requirements.txt
 # RUN python -m pip install -r /app/requirements.txt \
 #     && conda install -c conda-forge pygpu==0.7.6 \
 #     && pip cache purge
-RUN python -m pip install -r /app/requirements.txt \
-    && conda install pygpu \
+RUN conda install pygpu \
+    && python -m pip install -r /app/requirements.txt \
     && pip cache purge
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
