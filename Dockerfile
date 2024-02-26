@@ -77,4 +77,4 @@ RUN sudo chmod -R 777 /app && sudo chmod +x /app/train.py
 ENV INPUT=/input
 ENV OUTPUT=/output
 
-ENTRYPOINT ["python", "/app/train.py"]
+# ENTRYPOINT ["python", "/app/train.py"]
