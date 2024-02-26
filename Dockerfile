@@ -65,4 +65,4 @@ RUN sudo chmod -R 777 /app && sudo chmod +x /app/inference.py
 ENV INPUT=/input
 ENV OUTPUT=/output
 
-ENTRYPOINT ["python", "/app/inference.py"]
+ENTRYPOINT ["python", "/app/train.py"]
