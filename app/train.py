@@ -67,7 +67,7 @@ def function(options, test_val=0):
     
     datafile = "/app/examples/stratified_vol_loc_cv_nG.npy"
     
-    split_dict = np.load('stratified_vol_loc_cv_nG.npy', allow_pickle=True)
+    split_dict = np.load(datafile, allow_pickle=True)
     train_list = split_dict[test_val].get('train')
     test_list = split_dict[test_val].get('val')
     
