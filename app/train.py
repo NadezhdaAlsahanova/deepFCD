@@ -49,7 +49,7 @@ def function(options, test_val=0):
 # set an experiment name to store net weights and segmentation masks
     modalities = ['T1', 'FLAIR']
     x_names = ['_t1_brain-final.nii.gz', '_fl_brain-final.nii.gz']
-    options["experiment"] = "noel_deepFCD_dropoutMC_" + test_val
+    options["experiment"] = "noel_deepFCD_dropoutMC_" + str(test_val)
     print("experiment: {}".format(options["experiment"]))
     
     
