@@ -58,6 +58,7 @@ COPY app/requirements.txt /app/requirements.txt
 RUN python -m pip install -r /app/requirements.txt \
     && conda install pygpu theano \
     && pip cache purge
+RUN python -m pip install --upgrade h5py
 
 COPY app/ /app/
 
