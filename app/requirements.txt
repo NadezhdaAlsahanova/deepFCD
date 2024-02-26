@@ -1,6 +1,6 @@
 antspyx==0.4.2 --only-binary=antspyx
 git+https://github.com/ravnoor/atlasreader@master#egg=atlasreader
-Theano==1.0.4
+Theano==1.0.5
 keras==2.2.4
 h5py==2.10.0
 matplotlib==3.5.1
