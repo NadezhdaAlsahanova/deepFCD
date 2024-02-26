@@ -75,8 +75,7 @@ def function(options, test_val=0):
     options["load_checkpoint_2"] = False
     # options['continue_training_2'] = True
     # options['initial_epoch_2'] = 69
-    
-    train_list, test_list = [], []
+
     train_data, test_data = {}, {}
 
     train_data = {
