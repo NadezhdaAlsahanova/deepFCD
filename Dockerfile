@@ -66,6 +66,7 @@ COPY app/ /app/
 COPY tests/ /tests/
 
 RUN sudo chmod -R 777 /app && sudo chmod +x /app/inference.py
+RUN sudo chmod -R 777 /app && sudo chmod +x /app/train.py
 
 ENV INPUT=/input
 ENV OUTPUT=/output
