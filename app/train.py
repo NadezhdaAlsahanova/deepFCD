@@ -78,8 +78,6 @@ def function(options, test_val=0):
     
     train_list, test_list = [], []
     train_data, test_data = {}, {}
-    
-    print(test_list)
 
     train_data = {
         f: {
@@ -112,7 +110,7 @@ def function(options, test_val=0):
         f: os.path.join(options["train_folder"], f, f + '_exclusive_mask.nii.gz')
         for f in test_list
     }
-    
+    print(test_data)
     # --------------------------------------------------
     # initialize the CNN
     # --------------------------------------------------
