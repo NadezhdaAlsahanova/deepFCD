@@ -45,7 +45,7 @@ K.set_image_dim_ordering("th")
 K.set_image_data_format("channels_first")  # TH dimension ordering in this code
 
 
-def function(options, test_val=0)
+def function(options, test_val=0):
 # set an experiment name to store net weights and segmentation masks
     modalities = ['T1', 'FLAIR']
     x_names = ['_t1_brain-final.nii.gz', '_fl_brain-final.nii.gz']
