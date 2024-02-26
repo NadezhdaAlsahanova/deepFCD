@@ -80,33 +80,33 @@ def function(options, test_val=0):
 
     train_data = {
         f: {
-            m: os.path.join(options["train_folder"], f, f + n)
+            m: os.path.join(options["train_folder"], 'sub-'+f, 'sub-'+f + n)
             for m, n in zip(modalities, x_names)
         }
         for f in train_list
     }
     train_labels = {
-        f: os.path.join(options["train_lesions"], f[4:] + '.nii.gz')
+        f: os.path.join(options["train_lesions"], f + '.nii.gz')
         for f in train_list
     }
     subcort_masks_train = {
-        f: os.path.join(options["train_folder"], f, f +'_exclusive_mask.nii.gz')
+        f: os.path.join(options["train_folder"], 'sub-'+f, 'sub-'+f +'_exclusive_mask.nii.gz')
         for f in train_list
     }
     
     test_data = {
         f: {
-            m: os.path.join(options["train_folder"], f, f + n)
+            m: os.path.join(options["train_folder"], 'sub-'+f, 'sub-'+f + n)
             for m, n in zip(modalities, x_names)
         }
         for f in test_list
     }
     test_labels = {
-        f: os.path.join(options["train_lesions"], f[4:] + '.nii.gz')
+        f: os.path.join(options["train_lesions"], f + '.nii.gz')
         for f in test_list
     }
     subcort_masks_test = {
-        f: os.path.join(options["train_folder"], f, f + '_exclusive_mask.nii.gz')
+        f: os.path.join(options["train_folder"], 'sub-'+f, 'sub-'+f + '_exclusive_mask.nii.gz')
         for f in test_list
     }
     print(train_data.keys())
