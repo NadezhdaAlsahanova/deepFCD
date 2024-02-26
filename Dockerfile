@@ -59,11 +59,11 @@ RUN conda install pygpu theano \
     && python -m pip install -r /app/requirements.txt \
     && pip cache purge
 
-RUN cd /usr/lib/wsl/lib \
-        && rm libcuda.so libcuda.so.1 \
-        && ln -s libcuda.so.1.1 libcuda.so.1 \
-        && ln -s libcuda.so.1 libcuda.so \
-        && ldconfig
+# RUN cd /usr/lib/wsl/lib \
+#         && rm libcuda.so libcuda.so.1 \
+#         && ln -s libcuda.so.1.1 libcuda.so.1 \
+#         && ln -s libcuda.so.1 libcuda.so \
+#         && ldconfig
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
 
