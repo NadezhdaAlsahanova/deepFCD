@@ -56,10 +56,10 @@ COPY app/requirements.txt /app/requirements.txt
 #     && conda install -c conda-forge pygpu==0.7.6 \
 #     && pip cache purge
 RUN python -m pip install -r /app/requirements.txt \
-    && conda install pygpu theano \
+    && conda install pygpu \
     && pip cache purge
 RUN python -m pip install --upgrade h5py
-# RUN python -m pip install --upgrade numpy
+RUN python -m pip install numpy==1.19.5
 
 COPY app/ /app/
 
