@@ -52,8 +52,11 @@ RUN eval "$(conda shell.bash hook)" \
 
 COPY app/requirements.txt /app/requirements.txt
 
+# RUN python -m pip install -r /app/requirements.txt \
+#     && conda install -c conda-forge pygpu==0.7.6 \
+#     && pip cache purge
 RUN python -m pip install -r /app/requirements.txt \
-    && conda install -c conda-forge pygpu==0.7.6 \
+    && conda install pygpu theano \
     && pip cache purge
 
 COPY app/ /app/
