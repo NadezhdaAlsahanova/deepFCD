@@ -120,7 +120,7 @@ def function(options, test_val=0):
     
     model = off_the_shelf_model(options)
     
-    # print(model[0].summary())
+    print(model[0].summary())
     
     try:
         os.mkdir(options["weight_paths"])
