@@ -403,7 +403,12 @@ def load_train_patches(
         np.array(get_patches(image, centers, patch_size))
         for image, centers in zip(lesion_masks, nolesion_small)
     ]
-
+    print(patch_type, x_neg_patches[0].shape, x_pos_patches[0].shape)
+    for x1, x2 in zip(x_pos_patches, x_neg_patches):
+        try:
+            X = np.concatenate([x1, x2])
+        else:
+            print(x1.shape, x2.shape)
     # concatenate positive and negative patches for each subject
     X = np.concatenate(
         [np.concatenate([x1, x2]) for x1, x2 in zip(x_pos_patches, x_neg_patches)],
