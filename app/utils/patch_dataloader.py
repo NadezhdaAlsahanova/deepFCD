@@ -577,6 +577,9 @@ def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
     patches = []
     list_of_tuples = all([isinstance(center, tuple) for center in centers])
     sizes_match = [len(center) == len(patch_size) for center in centers]
+    lambda_1 = lambda c_idx, p_idx, s_idx: slice(image.shape[0] - c_idx - p_idx, image.shape[0] - c_idx + (s_idx - p_idx))
+    lambda_2 = lambda c_idx, p_idx, s_idx: slice(c_idx - p_idx, c_idx + (s_idx - p_idx))
+    lambdas = [lambda_1, lambda_2, lambda_2]
 
     if list_of_tuples and sizes_match:
         patch_half = tuple([idx // 2 for idx in patch_size])
@@ -585,8 +588,8 @@ def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
         new_image = np.pad(image, padding, mode="constant", constant_values=0)
         slices = [
             [
-                slice(image.shape[0] - c_idx - p_idx, image.shape[0] - c_idx + (s_idx - p_idx))
-                for (c_idx, p_idx, s_idx) in zip(center, patch_half, patch_size)
+                lambda_(c_idx, p_idx, s_idx)
+                for (c_idx, p_idx, s_idx, lambda_) in zip(center, patch_half, patch_size, lambdas)
             ]
             for center in new_centers
         ]
@@ -617,7 +620,7 @@ def get_smooth_patches(image, centers, patch_size=(16, 16, 16)):
     if list_of_tuples and sizes_match:
         patch_half = tuple([idx // 2 for idx in patch_size])
         new_centers = [map(add, center, patch_half) for center in centers]
-        padding = tuple((idx, size - idx) for idx, size in zip(patch_half, patch_size))
+        padding = tuple((idx*2, (size - idx)*2) for idx, size in zip(patch_half, patch_size))
         new_image = np.pad(image, padding, mode="constant", constant_values=0)
         slices = [
             [
