@@ -213,12 +213,12 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
     # extract patches and labels for each of the modalities
     data = []
     
-    for patch_type in ['original', 'opposite', 'smooth']:
+    for patch_type in ['opposite', 'original', 'smooth']:
         for m in modalities:
-            x_data = [train_x_data[s][m] for s in scans]
-            y_data = [train_y_data[s] for s in scans]
+            x_data = [train_x_data[s][m] for s in scans][:3]
+            y_data = [train_y_data[s] for s in scans][:3]
             if subcort_masks is not None:
-                submasks = [subcort_masks[s] for s in scans]
+                submasks = [subcort_masks[s] for s in scans][:3]
                 x_patches, y_patches = load_train_patches(
                     x_data, y_data, selected_voxels, options["patch_size"], submasks, patch_type
                 )
@@ -404,11 +404,7 @@ def load_train_patches(
         for image, centers in zip(lesion_masks, nolesion_small)
     ]
     print(patch_type, x_neg_patches[0].shape, x_pos_patches[0].shape)
-    for x1, x2 in zip(x_pos_patches, x_neg_patches):
-        try:
-            X = np.concatenate([x1, x2])
-        except:
-            print(x1.shape, x2.shape)
+
     # concatenate positive and negative patches for each subject
     X = np.concatenate(
         [np.concatenate([x1, x2]) for x1, x2 in zip(x_pos_patches, x_neg_patches)],
