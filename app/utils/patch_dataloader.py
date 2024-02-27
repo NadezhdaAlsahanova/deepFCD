@@ -407,7 +407,7 @@ def load_train_patches(
     for x1, x2 in zip(x_pos_patches, x_neg_patches):
         try:
             X = np.concatenate([x1, x2])
-        else:
+        except:
             print(x1.shape, x2.shape)
     # concatenate positive and negative patches for each subject
     X = np.concatenate(
