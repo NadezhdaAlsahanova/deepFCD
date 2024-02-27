@@ -594,6 +594,7 @@ def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
             ]
             for center in new_centers
         ]
+        print(slices[:10])
         patches = [new_image[tuple(idx)] for idx in slices]
     return patches
 
