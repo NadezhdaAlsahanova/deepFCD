@@ -213,12 +213,12 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
     # extract patches and labels for each of the modalities
     data = []
     
-    for patch_type in ['opposite', 'original', 'smooth']:
+    for patch_type in ['original', 'opposite', 'smooth']:
         for m in modalities:
-            x_data = [train_x_data[s][m] for s in scans][:3]
-            y_data = [train_y_data[s] for s in scans][:3]
+            x_data = [train_x_data[s][m] for s in scans]
+            y_data = [train_y_data[s] for s in scans]
             if subcort_masks is not None:
-                submasks = [subcort_masks[s] for s in scans][:3]
+                submasks = [subcort_masks[s] for s in scans]
                 x_patches, y_patches = load_train_patches(
                     x_data, y_data, selected_voxels, options["patch_size"], submasks, patch_type
                 )
@@ -403,7 +403,6 @@ def load_train_patches(
         np.array(get_patches(image, centers, patch_size))
         for image, centers in zip(lesion_masks, nolesion_small)
     ]
-    print(patch_type, x_neg_patches[0].shape, x_pos_patches[0].shape)
 
     # concatenate positive and negative patches for each subject
     X = np.concatenate(
@@ -578,15 +577,15 @@ def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
     patches = []
     list_of_tuples = all([isinstance(center, tuple) for center in centers])
     sizes_match = [len(center) == len(patch_size) for center in centers]
-    lambda_1 = lambda c_idx, p_idx, s_idx: slice(image.shape[0] - c_idx - p_idx, image.shape[0] - c_idx + (s_idx - p_idx))
-    lambda_2 = lambda c_idx, p_idx, s_idx: slice(c_idx - p_idx, c_idx + (s_idx - p_idx))
-    lambdas = [lambda_1, lambda_2, lambda_2]
 
     if list_of_tuples and sizes_match:
         patch_half = tuple([idx // 2 for idx in patch_size])
         new_centers = [map(add, center, patch_half) for center in centers]
         padding = tuple((idx, size - idx) for idx, size in zip(patch_half, patch_size))
         new_image = np.pad(image, padding, mode="constant", constant_values=0)
+        lambda_1 = lambda c_idx, p_idx, s_idx: slice(new_image.shape[0] - c_idx - p_idx, new_image.shape[0] - c_idx + (s_idx - p_idx))
+        lambda_2 = lambda c_idx, p_idx, s_idx: slice(c_idx - p_idx, c_idx + (s_idx - p_idx))
+        lambdas = [lambda_1, lambda_2, lambda_2]
         slices = [
             [
                 lambda_(c_idx, p_idx, s_idx)
@@ -594,7 +593,6 @@ def get_opposite_patches(image, centers, patch_size=(16, 16, 16)):
             ]
             for center in new_centers
         ]
-        print(slices[:10])
         patches = [new_image[tuple(idx)] for idx in slices]
     return patches
 
