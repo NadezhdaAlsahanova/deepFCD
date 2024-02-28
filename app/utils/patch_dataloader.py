@@ -619,7 +619,7 @@ def get_smooth_patches(image, centers, patch_size=(16, 16, 16)):
 
     if list_of_tuples and sizes_match:
         patch_half = tuple([idx // 2 for idx in patch_size])
-        new_centers = [map(add, center, patch_half) for center in centers]
+        new_centers = [map(add, center, tuple([size*2 for size in patch_half])) for center in centers]
         padding = tuple((idx*2, (size - idx)*2) for idx, size in zip(patch_half, patch_size))
         new_image = np.pad(image, padding, mode="constant", constant_values=0)
         slices = [
