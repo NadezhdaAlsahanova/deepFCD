@@ -177,6 +177,8 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
     else:
         print("\n\n")
         print("====> DNN1 // loading training data")
+        if not os.path.exists(options["hdf5_data_dir"]):
+            os.mkdir(options["hdf5_data_dir"])
         datapath = os.path.join(
             options["hdf5_data_dir"], options["experiment"] + "_LoSO_data.h5"
         )
@@ -205,6 +207,7 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
                 ],
             )
         else:
+            
             X, labels = load_training_data(
                 train_x_data, train_y_data, options, subcort_masks=subcort_masks
             )
