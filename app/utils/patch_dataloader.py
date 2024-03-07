@@ -46,7 +46,9 @@ def test_scan_uncertainty(
 
     # get test paths
     _, scan = os.path.split(flair_scans[0])
-    test_folder = options["pred_folder"]
+    test_folder = os.path.join(
+        options["test_folder"] , "pred_0"
+    )
     if not os.path.exists(test_folder):
         os.mkdir(test_folder)
 
