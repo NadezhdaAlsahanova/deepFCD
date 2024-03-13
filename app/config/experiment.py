@@ -30,7 +30,7 @@ options['dropout_3'] = 0.4
 
 # continue interrupted training sessions
 options['load_checkpoint_1'] = True
-options['load_checkpoint_2'] = False
+options['load_checkpoint_2'] = True
 options['continue_training_2'] = False
 if options['continue_training_2']:
     options['initial_epoch_2'] = 35
