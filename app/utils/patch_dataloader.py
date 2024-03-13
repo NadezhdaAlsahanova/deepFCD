@@ -443,7 +443,7 @@ def load_test_patches(
     threshold,
     patch_types=['original', 'opposite', 'smooth'],
     voxel_candidates=None,
-    subcort_mask=None,
+    subcort_masks=None,
     datatype=np.float32,
 ):
     """
