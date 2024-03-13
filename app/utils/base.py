@@ -411,6 +411,7 @@ def test_model(
             save_nifti=True,
             uncertainty=uncertainty,
             T=20,
+            subcort_masks=subcort_masks
         )
         pred_var_0_img = nifti2ants(
             pred_var_0, affine=header.get_qform(), header=header
@@ -423,6 +424,7 @@ def test_model(
             save_nifti=True,
             uncertainty=uncertainty,
             T=20,
+            subcort_masks=subcort_masks
         )
         pred_var_0_img = None
 
@@ -453,6 +455,7 @@ def test_model(
             uncertainty=uncertainty,
             T=50,
             candidate_mask=pred_mean_0 > threshold,
+            subcort_masks=subcort_masks
         )
         pred_var_1_img = nifti2ants(
             pred_var_1, affine=header.get_qform(), header=header
@@ -466,6 +469,7 @@ def test_model(
             uncertainty=uncertainty,
             T=50,
             candidate_mask=pred_mean_0 > threshold,
+            subcort_masks=subcort_masks
         )
         pred_var_1_img = None
 
@@ -581,7 +585,7 @@ def test_scan(
     save_nifti=False,
     uncertainty=False,
     candidate_mask=None,
-    subcort_mask=None,
+    subcort_masks=None,
     T=20,
 ):
     """
@@ -620,7 +624,7 @@ def test_scan(
         options["batch_size"],
         options["min_th"],
         candidate_mask,
-        subcort_mask
+        subcort_masks = subcort_masks
     ):
         if uncertainty:
             # predict uncertainty
