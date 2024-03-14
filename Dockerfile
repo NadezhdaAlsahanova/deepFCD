@@ -63,6 +63,7 @@ RUN conda install pygpu theano \
 
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
+RUN conda install -c conda-forge pygpu=0.7.6
 
 COPY app/ /app/
 
