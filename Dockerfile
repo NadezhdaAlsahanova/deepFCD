@@ -16,6 +16,7 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
+    libgpuarray-dev \
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -49,7 +50,7 @@ RUN eval "$(conda shell.bash hook)" \
     && conda activate preprocess \
     && python -m pip install -r deepMask/app/requirements.txt \
     && conda deactivate
-RUN apt-get -y install libgpuarray-dev
+
 COPY app/requirements.txt /app/requirements.txt
 
 
