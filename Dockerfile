@@ -10,7 +10,6 @@ LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
 # manually update outdated repository key
 # fixes invalid GPG error: https://forums.developer.nvidia.com/t/gpg-error-http-developer-download-nvidia-com-compute-cuda-repos-ubuntu1804-x86-64/212904
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
-
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y git \
     bash \
@@ -19,6 +18,7 @@ RUN apt-get update && apt-get upgrade -y \
     sudo \
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN sudo apt install build-essential
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
