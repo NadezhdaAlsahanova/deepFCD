@@ -54,8 +54,8 @@ options['train_split'] = 0.25
 
 # maximum number of epochs used to train the model
 options['max_epochs'] = 60
-options['max_epochs_1'] = 30
-options['max_epochs_2'] = 50
+options['max_epochs_1'] = 1
+options['max_epochs_2'] = 1
 options['patience'] = 15
 # file paths to store the network parameter weights. These can be reused for posterior use.
 options['weight_paths'] = None
