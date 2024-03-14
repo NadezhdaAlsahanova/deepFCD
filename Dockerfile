@@ -57,7 +57,7 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda-10.0/targets/x86_64-linux/lib
 RUN python -m pip install -r /app/requirements.txt \
     && conda install -c conda-forge pygpu==0.7.6 \
     && pip cache purge
-RUN conda install -c conda-forge pytensor
+
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
 
