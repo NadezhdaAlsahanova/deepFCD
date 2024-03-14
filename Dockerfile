@@ -17,12 +17,12 @@ RUN apt-get update && apt-get upgrade -y \
     bzip2 \
     sudo \
     build-essential \
+    libgpuarray3 \ 
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
-RUN sudo apt-get install -y libgpuarray3
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
@@ -65,6 +65,7 @@ RUN python -m pip install -r /app/requirements.txt \
 
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
+RUN conda install theano
 
 COPY app/ /app/
 
