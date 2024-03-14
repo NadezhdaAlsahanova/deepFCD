@@ -16,9 +16,9 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
+    build-essential \
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN sudo apt install build-essential
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
