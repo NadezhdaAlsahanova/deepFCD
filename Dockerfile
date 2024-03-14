@@ -21,7 +21,7 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sudo apt update
-RUN sudo apt install libgpuarray-dev
+RUN sudo apt install -y libgpuarray-dev
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
