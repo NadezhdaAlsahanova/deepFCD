@@ -20,6 +20,9 @@ RUN apt-get update && apt-get upgrade -y \
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN sudo apt update
+RUN sudo apt install libgpuarray-dev
+
 ENV PATH=/home/user/conda/bin:${PATH}
 
 # create a working directory
