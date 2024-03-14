@@ -16,6 +16,7 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
+    libgpuarray3 \
     && sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
