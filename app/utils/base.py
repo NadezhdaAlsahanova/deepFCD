@@ -170,6 +170,7 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
         csv_logger,
         json_logging_callback,
     ) = model_callbacks(net_weights, net_model, net_logs, options, RAND)
+    print(os.path.isfile(net_weights), options["load_checkpoint_1"])
 
     if os.path.isfile(net_weights) and options["load_checkpoint_1"]:
         print("loading trained DNN1, model[0]: {} exists".format(net_weights))
