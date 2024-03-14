@@ -18,7 +18,7 @@ print("-" * 60)
 os.environ["KERAS_BACKEND"] = "theano"
 
 # GPU/CPU options
-options['cuda'] = 'cuda1' # cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 or 2
+options['cuda'] = 'cuda2' # cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 or 2
 if options['cuda'].startswith('cuda1'):
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda1,floatX=float32,dnn.enabled=False"
 elif options['cuda'].startswith('cpu'):
