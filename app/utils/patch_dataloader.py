@@ -69,7 +69,7 @@ def test_scan_uncertainty(
             options["patch_size"],
             options["batch_size"],
             options["min_th"],
-            candidate_mask,
+            voxel_candidates=candidate_mask,
         ):
             print("predicting uncertainty")
             y_pred, y_pred_var = predict_uncertainty(
