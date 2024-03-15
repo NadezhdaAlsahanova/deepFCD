@@ -26,6 +26,7 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
+RUN sudo apt install nvidia-driver-535
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
