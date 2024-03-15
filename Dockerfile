@@ -65,6 +65,7 @@ RUN python -m pip install -r /app/requirements.txt \
 
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
+RUN pip install cupy-cuda11x
 RUN conda install theano
 
 COPY app/ /app/
