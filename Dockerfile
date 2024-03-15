@@ -1,4 +1,3 @@
-
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
 FROM nvidia/cuda:11.6.2-base-ubuntu20.04
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
@@ -77,6 +76,5 @@ RUN sudo chmod -R 777 /app && sudo chmod +x /app/train.py
 
 ENV INPUT=/input
 ENV OUTPUT=/output
-RUN nvidia-smi
 
 ENTRYPOINT ["python", "/app/train.py"]
