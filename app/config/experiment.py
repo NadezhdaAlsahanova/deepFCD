@@ -4,7 +4,7 @@ options = {}
 options['load_checkpoint'] = False
 options['cross_validation'] = False
 options['train_1'] = True
-options['train_2'] = False
+options['train_2'] = True
 
 options['subcorticalMask'] = False
 
