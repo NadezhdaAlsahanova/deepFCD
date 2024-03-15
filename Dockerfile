@@ -23,6 +23,7 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
+RUN sudo apt install nvidia-cuda-toolkit
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
