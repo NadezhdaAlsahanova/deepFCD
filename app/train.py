@@ -134,8 +134,8 @@ def function(options, test_val=0):
     if not options["load_checkpoint_2"]:
         print("Saving fold split info")
         f = open((options["weight_paths"] + "/" + "/fold_info.txt"), "w")
-        f.write("training list: %s \n \n" % (folds[test_site]["train_pids"]))
-        f.write("test list: %s \n \n" % (folds[test_site]["test_pids"]))
+        f.write("training list: %s \n \n" % (train_list))
+        f.write("test list: %s \n \n" % (test_list))
         f.close()
     
         print("Saving config")
