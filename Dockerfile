@@ -1,6 +1,5 @@
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
-FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04 
-#nvidia/cuda:11.6.2-base-ubuntu20.04
+FROM nvidia/cuda:11.6.2-base-ubuntu20.04
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
         org.opencontainers.image.title="deepFCD" \
         org.opencontainers.image.description="Automated Detection of Focal Cortical Dysplasia using Deep Learning" \
