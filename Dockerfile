@@ -19,10 +19,11 @@ RUN apt-get update && apt-get upgrade -y \
     bzip2 \
     sudo \
     build-essential \
-    libgpuarray3 \ 
-    && sudo apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    libgpuarray3 
+    
 RUN sudo apt-get install -y nvidia-cuda-toolkit 
+RUN sudo apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
 RUN sudo apt install -y nvidia-driver-535
