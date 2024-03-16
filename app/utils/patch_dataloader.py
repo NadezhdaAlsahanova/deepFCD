@@ -485,11 +485,17 @@ def load_test_patches(
     # use the binary mask to extract candidate voxels
     if voxel_candidates is None:
         flair_scans = [test_x_data[s]["FLAIR"] for s in scans]
-        submasks = [load_nii(name).get_data() for name in subcort_masks]
-        selected_voxels = [
-            get_mask_voxels(np.logical_and(np.logical_not(submask), brain))
-            for submask, brain in zip(submasks, select_training_voxels(flair_scans, threshold))
-        ][0]
+        if subcort_masks is None:
+            selected_voxels = [
+                get_mask_voxels(brain)
+                for brain in select_training_voxels(flair_scans, threshold)
+            ][0]
+        else:
+            submasks = [load_nii(name).get_data() for name in subcort_masks]
+            selected_voxels = [
+                get_mask_voxels(np.logical_and(np.logical_not(submask), brain))
+                for submask, brain in zip(submasks, select_training_voxels(flair_scans, threshold))
+            ][0]
     else:
         selected_voxels = get_mask_voxels(voxel_candidates)
 
