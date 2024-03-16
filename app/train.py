@@ -28,7 +28,7 @@ elif options['cuda'].startswith('cpu'):
     os.environ['openmp'] = 'True'
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cpu,openmp=True,floatX=float32"
 else:
-    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=False"
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda2,floatX=float32,dnn.enabled=False"
 print(os.environ["THEANO_FLAGS"])
 
 import numpy as np
