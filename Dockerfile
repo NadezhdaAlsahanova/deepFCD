@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade -y \
     libgpuarray3 
 ENV TZ=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive    
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN sudo apt-get install -y nvidia-cuda-toolkit 
 RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
