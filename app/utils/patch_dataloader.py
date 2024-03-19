@@ -469,7 +469,6 @@ def load_test_patches(
 
     # load all image modalities and normalize intensities
     images = []
-    print(subcort_masks)
 
     for m in modalities:
         raw_images = [load_nii(test_x_data[s][m]).get_data() for s in scans]
