@@ -624,8 +624,8 @@ def test_scan(
         options["patch_size"],
         options["batch_size"],
         options["min_th"],
-        candidate_mask,
-        subcort_masks = subcort_masks
+        voxel_candidates=candidate_mask,
+        subcort_masks=subcort_masks
     ):
         if uncertainty:
             # predict uncertainty
