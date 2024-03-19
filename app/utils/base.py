@@ -583,7 +583,7 @@ def test_scan(
     test_x_data,
     options,
     transit=None,
-    save_nifti=False,
+    save_nifti=True,
     uncertainty=False,
     candidate_mask=None,
     subcort_masks=None,
