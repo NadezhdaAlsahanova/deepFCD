@@ -492,7 +492,7 @@ def load_test_patches(
                 for brain in select_training_voxels(flair_scans, threshold)
             ][0]
         else:
-            submasks = [load_nii(name).get_data() for name in subcort_masks]
+            submasks = [load_nii(subcort_masks[s]).get_data() for s in scans]
             selected_voxels = [
                 get_mask_voxels(np.logical_and(np.logical_not(submask), brain))
                 for submask, brain in zip(submasks, select_training_voxels(flair_scans, threshold))
