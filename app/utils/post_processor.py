@@ -4,7 +4,7 @@ import nibabel as nib
 import numpy as np
 from scipy import ndimage as nd
 from scipy.ndimage import binary_opening
-from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import cohen_kappa_score, accuracy_score
 
 from utils.metrics import *
 
