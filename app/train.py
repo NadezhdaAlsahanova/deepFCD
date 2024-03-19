@@ -208,11 +208,11 @@ def function(options, test_val=0):
         # lpred: predicted label only
         # count: number of false positives
         if not options["compute_performance"]:
-            test0, test1 = test_model(model, t_data, options, subcort_masks_test)
+            test0, test1 = test_model(model, t_data, options, subcort_masks=subcort_masks_test)
             print("number of non-zero voxels after CNN#1: {}".format(np.count_nonzero(test0)))
             print("number of non-zero voxels after CNN#2: {}".format(np.count_nonzero(test1)))
         else:
-            test0, test1, test2, lpred, count = test_model(model, t_data, options, subcort_masks_test, performance=True)
+            test0, test1, test2, lpred, count = test_model(model, t_data, options, subcort_masks=subcort_masks_test, performance=True)
             label = np.asarray(load_nii(test_labels[scan]).get_data())
             # print("label_shape: {}, label_unique: {}".format(label.shape, np.unique(label)))
             lesion_pred = extract_lesional_clus(label, test1, scan, options)
