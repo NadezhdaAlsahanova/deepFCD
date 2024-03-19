@@ -154,7 +154,11 @@ def function(options, test_val=0):
     diff = end - start
     print("training or loading model time elapsed: ~ {} seconds".format(diff))
     
+    if not os.path.exists(os.path.join(options["test_folder"], "predictions")):
+        os.mkdir(os.path.join(options["test_folder"], "predictions"))
     
+    if not os.path.exists(os.path.join(options["test_folder"], "predictions", options["experiment"])):
+        os.mkdir(os.path.join(options["test_folder"], "predictions", options["experiment"]))
     # --------------------------------------------------
     # test the cascaded model
     # --------------------------------------------------
@@ -166,6 +170,9 @@ def function(options, test_val=0):
     
         t_data = {}
         t_data[scan] = test_data[scan]
+
+        if not os.path.exists(os.path.join(options["test_folder"], "predictions", options["experiment"], scan)):
+            os.mkdir(os.path.join(options["test_folder"], "predictions", options["experiment"], scan))
     
         options["pred_folder"] = os.path.join(
             options["test_folder"], "predictions", options["experiment"], scan
