@@ -126,12 +126,12 @@ def extract_lesional_clus(label, input_scan, scan, options):
 
 def performancer(perf, scan, test, label, lesion_pred, count):
     perf[scan] = perf_measure_vox(test.flatten(), label.flatten())
-    perf[scan]["accuracy"] = accuracy_score(label.flatten(), test.flatten())
-    perf[scan]["kappa"] = cohen_kappa_score(label.flatten(), lesion_pred.flatten())
+    perf[scan]["accuracy"] = accuracy_score(label.flatten()>0.5, test.flatten()>0.5)
+    perf[scan]["kappa"] = cohen_kappa_score(label.flatten()>0.5, lesion_pred.flatten()>0.5)
     # perf[scan]['jaccard'] = jc(label.flatten(), lesion_pred.flatten())
-    perf[scan]["dice_coef"] = dc(lesion_pred, label)
+    perf[scan]["dice_coef"] = dc(lesion_pred>0.5, label>0.5)
 
-    cm = confusion_matrix(label.flatten(), test.flatten(), (1, 0))
+    cm = confusion_matrix(label.flatten()>0.5, test.flatten()>0.5, (1, 0))
     cm_norm = 100 * cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
     print(cm_norm.astype(int))
 
