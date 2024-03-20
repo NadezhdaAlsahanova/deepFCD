@@ -131,7 +131,7 @@ def performancer(perf, scan, test, label, lesion_pred, count):
     # perf[scan]['jaccard'] = jc(label.flatten(), lesion_pred.flatten())
     perf[scan]["dice_coef"] = dc(lesion_pred>0.5, label>0.5)
 
-    cm = confusion_matrix(label.flatten()>0.5, test.flatten()>0.5, (1, 0))
+    cm = confusion_matrix(label.flatten()>0.5, test.flatten()>0.5, labels=(1, 0))
     cm_norm = 100 * cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
     print(cm_norm.astype(int))
 
