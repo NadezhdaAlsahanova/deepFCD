@@ -138,7 +138,7 @@ def predict_uncertainty(model, data, batch_size, T=10):
     )  # instantiate a Keras function.
     K.set_image_dim_ordering("th")
     K.set_image_data_format("channels_first")
-    T = 2
+
     Yt_hat = np.array(
         [
             predict_stochastic(f_stochastic, data, batch_size=batch_size)
