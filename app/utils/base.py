@@ -411,7 +411,7 @@ def test_model(
             options,
             save_nifti=True,
             uncertainty=uncertainty,
-            T=20,
+            T=10,
             subcort_masks=subcort_masks
         )
         pred_var_0_img = nifti2ants(
@@ -424,7 +424,7 @@ def test_model(
             options,
             save_nifti=True,
             uncertainty=uncertainty,
-            T=20,
+            T=10,
             subcort_masks=subcort_masks
         )
         pred_var_0_img = None
@@ -454,7 +454,7 @@ def test_model(
             options,
             save_nifti=True,
             uncertainty=uncertainty,
-            T=50,
+            T=20,
             candidate_mask=pred_mean_0 > threshold,
             subcort_masks=subcort_masks
         )
@@ -468,7 +468,7 @@ def test_model(
             options,
             save_nifti=True,
             uncertainty=uncertainty,
-            T=50,
+            T=20,
             candidate_mask=pred_mean_0 > threshold,
             subcort_masks=subcort_masks
         )
