@@ -271,5 +271,6 @@ if __name__ == '__main__':
     if not os.path.isabs(args.dir):
         args.dir = os.path.abspath(args.dir)
     for sub in subs:
+        print(sub)
         args.id = 'sub-'+sub
         inference(args)
