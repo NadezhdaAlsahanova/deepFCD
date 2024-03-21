@@ -41,7 +41,7 @@ options['cuda'] = 'cuda0' # cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 
 if options['cuda'].startswith('cuda1'):
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda1,floatX=float32,dnn.enabled=False"
 if options['cuda'].startswith('cuda0'):
-    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=True"
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=False"
 elif options['cuda'].startswith('cpu'):
     os.environ['OMP_NUM_THREADS'] = str(multiprocessing.cpu_count())
     os.environ['MKL_NUM_THREADS'] = str(multiprocessing.cpu_count())
