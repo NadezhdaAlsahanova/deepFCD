@@ -18,8 +18,8 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
-    build-essential #\
-    libgpuarray3 \
+    build-essential \
+    libgpuarray3 #\
     # ubuntu-drivers-common
 ENV TZ=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive    
