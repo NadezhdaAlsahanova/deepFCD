@@ -18,14 +18,14 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
-    build-essential \
-    libgpuarray3 \
-    ubuntu-drivers-common
+    build-essential #\
+    # libgpuarray3 \
+    # ubuntu-drivers-common
 # ENV TZ=Europe/Moscow \
 #     DEBIAN_FRONTEND=noninteractive    
 # RUN sudo apt-get install -y nvidia-cuda-toolkit 
 # RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN sudo apt-get -y install cudnn9-cuda-12
+# RUN sudo apt-get -y install cudnn9-cuda-12
 RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN sudo apt update
