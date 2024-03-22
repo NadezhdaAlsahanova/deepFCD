@@ -1,6 +1,6 @@
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
-# FROM nvidia/cuda:12.2.0-base-ubuntu22.04
-FROM nvcr.io/nvidia/tensorflow:23.07-tf2-py3
+FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+# FROM nvcr.io/nvidia/tensorflow:23.07-tf2-py3
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
         org.opencontainers.image.title="deepFCD" \
         org.opencontainers.image.description="Automated Detection of Focal Cortical Dysplasia using Deep Learning" \
@@ -11,7 +11,7 @@ LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
 # manually update outdated repository key
 # fixes invalid GPG error: https://forums.developer.nvidia.com/t/gpg-error-http-developer-download-nvidia-com-compute-cuda-repos-ubuntu1804-x86-64/212904
 
-# RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y git \
     bash \
@@ -19,18 +19,26 @@ RUN apt-get update && apt-get upgrade -y \
     bzip2 \
     sudo \
     build-essential #\
-    # libgpuarray3 \
+    libgpuarray3 \
     # ubuntu-drivers-common
-# ENV TZ=Europe/Moscow \
-#     DEBIAN_FRONTEND=noninteractive    
+ENV TZ=Europe/Moscow \
+    DEBIAN_FRONTEND=noninteractive    
 # RUN sudo apt-get install -y nvidia-cuda-toolkit 
-# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # RUN sudo apt-get -y install cudnn9-cuda-12
 RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN sudo apt update
+RUN sudo apt install -y nvidia-driver-535
+RUN sudo apt install gcc
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+RUN sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+RUN wget https://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda-repo-ubuntu2204-12-2-local_12.2.0-535.54.03-1_amd64.deb
+RUN sudo dpkg -i cuda-repo-ubuntu2204-12-2-local_12.2.0-535.54.03-1_amd64.deb
+RUN sudo cp /var/cuda-repo-ubuntu2204-12-2-local/cuda-*-keyring.gpg /usr/share/keyrings/
+RUN sudo apt-get update
+RUN sudo apt-get -y install cuda
 # RUN sudo apt install -y libgpuarray-dev
-# RUN sudo apt install -y nvidia-driver-535
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
@@ -66,7 +74,10 @@ RUN eval "$(conda shell.bash hook)" \
 COPY app/requirements.txt /app/requirements.txt
 
 
-ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
+# ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
+ENV PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+ENV LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
+                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 RUN python -m pip install -r /app/requirements.txt \
     && conda install -c conda-forge pygpu==0.7.6 \
     && pip cache purge
