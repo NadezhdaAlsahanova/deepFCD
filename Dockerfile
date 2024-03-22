@@ -28,7 +28,7 @@ RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
-RUN sudo apt install -y nvidia-driver-535.129.03
+RUN sudo apt install -y nvidia-driver-535
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
