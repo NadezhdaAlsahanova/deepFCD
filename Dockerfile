@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade -y \
     libgpuarray3 
 ENV TZ=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive    
+RUN sudo apt-get install -y nvidia-cuda-toolkit 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN sudo apt-get -y install cudnn9-cuda-12
 RUN sudo apt-get clean \
@@ -28,7 +29,6 @@ RUN sudo apt-get clean \
 RUN sudo apt update
 RUN sudo apt install -y libgpuarray-dev
 RUN sudo apt install -y nvidia-driver-535
-RUN sudo apt-get install -y nvidia-cuda-toolkit 
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
