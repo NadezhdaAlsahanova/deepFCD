@@ -18,7 +18,8 @@ RUN apt-get update && apt-get upgrade -y \
     bzip2 \
     sudo \
     build-essential \
-    libgpuarray3 
+    libgpuarray3 \
+    ubuntu-drivers-common
 ENV TZ=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive    
 RUN sudo apt-get install -y nvidia-cuda-toolkit 
