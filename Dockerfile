@@ -66,7 +66,7 @@ RUN eval "$(conda shell.bash hook)" \
 COPY app/requirements.txt /app/requirements.txt
 
 
-ENV LD_LIBRARY_PATH=/usr/local/cuda-11.6/compat
+ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
 RUN python -m pip install -r /app/requirements.txt \
     && conda install -c conda-forge pygpu==0.7.6 \
     && pip cache purge
