@@ -75,8 +75,8 @@ COPY app/requirements.txt /app/requirements.txt
 
 
 # ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
-ENV PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-ENV LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
+RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
                          ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 RUN python -m pip install -r /app/requirements.txt \
     && conda install -c conda-forge pygpu==0.7.6 \
