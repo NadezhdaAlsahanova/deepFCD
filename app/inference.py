@@ -90,7 +90,7 @@ def inference(args):
 
     options["dropout_mc"] = True
     options["batch_size"] = 350000
-    options["mini_batch_size"] = 2048
+    options["mini_batch_size"] = 4096
     options["load_checkpoint_1"] = True
     options["load_checkpoint_2"] = True
 
