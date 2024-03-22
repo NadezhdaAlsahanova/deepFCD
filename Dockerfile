@@ -1,5 +1,6 @@
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
-FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+# FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+FROM nvcr.io/nvidia/tensorflow:23.07-tf2-py3
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
         org.opencontainers.image.title="deepFCD" \
         org.opencontainers.image.description="Automated Detection of Focal Cortical Dysplasia using Deep Learning" \
@@ -10,7 +11,7 @@ LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
 # manually update outdated repository key
 # fixes invalid GPG error: https://forums.developer.nvidia.com/t/gpg-error-http-developer-download-nvidia-com-compute-cuda-repos-ubuntu1804-x86-64/212904
 
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+# RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y git \
     bash \
@@ -18,18 +19,18 @@ RUN apt-get update && apt-get upgrade -y \
     bzip2 \
     sudo \
     build-essential \
-    libgpuarray3 \
+    # libgpuarray3 \
     ubuntu-drivers-common
-ENV TZ=Europe/Moscow \
-    DEBIAN_FRONTEND=noninteractive    
-RUN sudo apt-get install -y nvidia-cuda-toolkit 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN sudo apt-get -y install cudnn9-cuda-12
+# ENV TZ=Europe/Moscow \
+#     DEBIAN_FRONTEND=noninteractive    
+# RUN sudo apt-get install -y nvidia-cuda-toolkit 
+# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# RUN sudo apt-get -y install cudnn9-cuda-12
 RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN sudo apt update
-RUN sudo apt install -y libgpuarray-dev
-RUN sudo apt install -y nvidia-driver-535
+# RUN sudo apt install -y libgpuarray-dev
+# RUN sudo apt install -y nvidia-driver-535
 
 ENV PATH=/home/user/conda/bin:${PATH}
 
