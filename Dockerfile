@@ -87,7 +87,7 @@ RUN conda config --add channels conda-forge
 RUN conda config --set channel_priority strict
 RUN conda install libcublas libcublas-dev libcublas-static
 # RUN conda install -c conda-forge cupy
-RUN python -m pip install --upgrade h5py
+RUN python -m pip install h5py==2.10.0
 RUN python -m pip install numpy==1.19.5
 
 COPY app/ /app/
