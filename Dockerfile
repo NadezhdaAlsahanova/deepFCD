@@ -75,7 +75,7 @@ RUN eval "$(conda shell.bash hook)" \
 COPY app/requirements.txt /app/requirements.txt
 
 
-# ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
+ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
 # RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 # RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
                          # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
