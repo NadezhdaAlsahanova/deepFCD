@@ -1,5 +1,5 @@
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
-FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+FROM nvcr.io/nvidia/theano:18.08
 # FROM ubuntu:22.04
 # FROM nvcr.io/nvidia/tensorflow:23.07-tf2-py3
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
@@ -19,9 +19,9 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
-    build-essential \
-    libgpuarray3 \
-    cuda
+    build-essential # \
+    # libgpuarray3 \
+    # cuda
     # ubuntu-drivers-common
 ENV TZ=Europe/Moscow \
     DEBIAN_FRONTEND=noninteractive    
@@ -30,9 +30,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # RUN sudo apt-get -y install cudnn9-cuda-12
 RUN sudo apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN sudo apt update
-RUN sudo apt install -y nvidia-driver-535
-RUN sudo apt install gcc
+# RUN sudo apt update
+# RUN sudo apt install -y nvidia-driver-535
+# RUN sudo apt install gcc
 # RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 # RUN sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 # RUN wget https://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda-repo-ubuntu2204-12-2-local_12.2.0-535.129.03-1_amd64.deb
@@ -77,14 +77,14 @@ COPY app/requirements.txt /app/requirements.txt
 
 
 # ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
-RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
-                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-RUN python -m pip install -r /app/requirements.txt \
-    && conda install -c conda-forge pygpu==0.7.6 \
-    && pip cache purge
+# RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+# RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
+                         # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+RUN python -m pip install -r /app/requirements.txt #\
+    # && conda install -c conda-forge pygpu==0.7.6 \
+    # && pip cache purge
 
-RUN conda install -c conda-forge cupy
+# RUN conda install -c conda-forge cupy
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
 
