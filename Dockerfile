@@ -19,7 +19,7 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     bzip2 \
     sudo \
-    build-essential # \
+    build-essential 
     # libgpuarray3 \
     # cuda
     # ubuntu-drivers-common
@@ -80,7 +80,7 @@ COPY app/requirements.txt /app/requirements.txt
 # RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 # RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
                          # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-RUN python -m pip install -r /app/requirements.txt #\
+RUN python -m pip install -r /app/requirements.txt 
     # && conda install -c conda-forge pygpu==0.7.6 \
     # && pip cache purge
 
