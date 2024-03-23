@@ -1,6 +1,5 @@
 # FROM noelmni/cuda:10.0-cudnn7-devel-ubuntu18.04
-FROM nvcr.io/nvidia/theano:18.08
-# FROM ubuntu:22.04
+FROM nvcr.io/nvidia/cuda:12.2.0-runtime-ubuntu22.04
 # FROM nvcr.io/nvidia/tensorflow:23.07-tf2-py3
 LABEL maintainer="Ravnoor Singh Gill <ravnoor@gmail.com>" \
         org.opencontainers.image.title="deepFCD" \
