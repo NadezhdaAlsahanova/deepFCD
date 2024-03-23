@@ -80,9 +80,9 @@ COPY app/requirements.txt /app/requirements.txt
 # RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 # RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
                          # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-RUN python -m pip install -r /app/requirements.txt 
-    # && conda install -c conda-forge pygpu==0.7.6 \
-    # && pip cache purge
+RUN python -m pip install -r /app/requirements.txt \
+    && conda install -c conda-forge pygpu==0.7.6 \
+    && pip cache purge
 
 # RUN conda install -c conda-forge cupy
 RUN python -m pip install --upgrade h5py
