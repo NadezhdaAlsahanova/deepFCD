@@ -76,6 +76,7 @@ COPY app/requirements.txt /app/requirements.txt
 
 
 ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib
+RUN mv /usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so.12 /usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so
 # RUN export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 # RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64\
                          # ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
