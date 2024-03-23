@@ -83,7 +83,9 @@ RUN sudo mv /usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so.12 /usr/local/c
 RUN python -m pip install -r /app/requirements.txt \
     && conda install -c conda-forge pygpu==0.7.6 \
     && pip cache purge
-RUN python -m pip install nvidia-cublas-cu12
+RUN conda config --add channels conda-forge
+RUN conda config --set channel_priority strict
+RUN conda install libcublas libcublas-dev libcublas-static
 # RUN conda install -c conda-forge cupy
 RUN python -m pip install --upgrade h5py
 RUN python -m pip install numpy==1.19.5
