@@ -211,7 +211,7 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
         selected_voxels = select_voxels_from_previous_model(
             model, train_x_data, options
         )
-
+    print('Selected voxels')
     # extract patches and labels for each of the modalities
     data = []
     
@@ -233,10 +233,12 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
                     subcort_masks=None,
                     patch_type=patch_type
                 )
+            print(f'Made patches for {m} and {patch_type}')
             data.append(x_patches)
     # stack patches in channels [samples, channels, p1, p2, p3]
     X = np.stack(data, axis=1)
     Y = y_patches
+    print('Stacked data')
 
     # apply randomization if selected
     if options["randomize_train"]:
@@ -245,6 +247,7 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
         X = np.random.permutation(X.astype(dtype=np.float32))
         np.random.seed(seed)
         Y = np.random.permutation(Y.astype(dtype=np.int32))
+    print('Shaffle data')
 
     # Y = [num_samples,]
     if Y.shape[3] == 1:
