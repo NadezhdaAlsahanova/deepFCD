@@ -215,7 +215,7 @@ def load_training_data(train_x_data, train_y_data, options, subcort_masks, model
     # extract patches and labels for each of the modalities
     data = []
     
-    for patch_type in ['original']#, 'opposite', 'smooth']:
+    for patch_type in ['original']:#, 'opposite', 'smooth']:
         for m in modalities:
             x_data = [train_x_data[s][m] for s in scans]
             y_data = [train_y_data[s] for s in scans]
