@@ -18,9 +18,11 @@ print("-" * 60)
 os.environ["KERAS_BACKEND"] = "theano"
 
 # GPU/CPU options
-options['cuda'] = 'cuda2' # cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 or 2
+options['cuda'] = 'cuda0' # cpu, cuda, cuda0, cuda1, or cudaX: flag using gpu 1 or 2
 if options['cuda'].startswith('cuda1'):
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda1,floatX=float32,dnn.enabled=False"
+if options['cuda'].startswith('cuda0'):
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda0,floatX=float32,dnn.enabled=False"
 elif options['cuda'].startswith('cpu'):
     os.environ['OMP_NUM_THREADS'] = str(multiprocessing.cpu_count())
     os.environ['MKL_NUM_THREADS'] = str(multiprocessing.cpu_count())
@@ -49,7 +51,7 @@ def function(options, test_val=0):
 # set an experiment name to store net weights and segmentation masks
     modalities = ['T1', 'FLAIR']
     x_names = ['_t1_brain-final.nii.gz', '_fl_brain-final.nii.gz']
-    options["experiment"] = "noel_deepFCD_dropoutMC_" + str(test_val)
+    options["experiment"] = "noel_deepFCD_dropoutMC_2f_" + str(test_val)
     print("experiment: {}".format(options["experiment"]))
     
     
@@ -260,7 +262,7 @@ if __name__ == '__main__':
     options["parallel_gpu"] = False
    
     options["batch_size"] = 350000
-    options["mini_batch_size"] = 1024
+    options["mini_batch_size"] = 4096
     options["main_dir"] = intput_dir
     options["out_dir"] = output_dir
     options["test_folder"] = output_dir
