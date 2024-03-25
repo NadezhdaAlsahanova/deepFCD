@@ -86,7 +86,7 @@ RUN python -m pip install -r /app/requirements.txt \
 RUN conda config --add channels conda-forge
 RUN conda config --set channel_priority strict
 RUN conda install libcublas libcublas-dev libcublas-static
-RUN conda install mkl-service
+RUN conda install -y mkl-service
 # RUN conda install -c conda-forge cupy
 RUN python -m pip install h5py==2.10.0
 RUN python -m pip install numpy==1.19.5
