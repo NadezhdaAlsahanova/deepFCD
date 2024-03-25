@@ -262,7 +262,7 @@ if __name__ == '__main__':
     options["parallel_gpu"] = False
    
     options["batch_size"] = 250000
-    options["mini_batch_size"] = 2048
+    options["mini_batch_size"] = 2000
     options["main_dir"] = intput_dir
     options["out_dir"] = output_dir
     options["test_folder"] = output_dir
