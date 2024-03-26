@@ -261,11 +261,11 @@ if __name__ == '__main__':
     
     options["parallel_gpu"] = False
    
-    options["batch_size"] = 300000
-    options["mini_batch_size"] = 1600
+    options["batch_size"] = 400000
+    options["mini_batch_size"] = 4096
     options["main_dir"] = intput_dir
     options["out_dir"] = output_dir
     options["test_folder"] = output_dir
 
-    for i in range(9):
+    for i in [8,7,6,5,4,3,2,1]:
         function(options, test_val=i)
