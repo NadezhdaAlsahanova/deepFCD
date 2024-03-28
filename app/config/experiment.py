@@ -41,7 +41,7 @@ else:
 options['exclude'] = ['.DS_Store', '._.DS_Store', '078', '095']
 
 # threshold to select voxels for training, discarding CSF and darker WM in FLAIR
-options['thr'] = 0.2
+options['thr'] = 0.25
 options['min_th'] = options['thr'] # z-scored [10%ile=0.15, 15%ile=0.28, 20%ile=0.38, 25%ile=0.46, 28%ile=0.5, 5%ile=-0.05, 0%ile=-6]
 options['th_dnn_train_2'] = 0.1 # probabilistic
 
