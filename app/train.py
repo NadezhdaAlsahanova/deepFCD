@@ -73,7 +73,7 @@ def function(options, test_val=0):
     train_list = split_dict[test_val].get('train')
     test_list = split_dict[test_val].get('val')
     
-    options["load_checkpoint_1"] = False
+    options["load_checkpoint_1"] = True
     options["load_checkpoint_2"] = False
     # options['continue_training_2'] = True
     # options['initial_epoch_2'] = 69
