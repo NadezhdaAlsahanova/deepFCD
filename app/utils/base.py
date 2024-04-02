@@ -207,7 +207,6 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
                     json_logging_callback,
                 ],
             )
-            
             del X, y, (X_val, y_val
         else:
             
@@ -238,7 +237,6 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
                     json_logging_callback,
                 ],
             )
-            
             del X, y, labels
         copy_most_recent_model(
             os.path.join(options["weight_paths"], "checkpoints"), net_model
