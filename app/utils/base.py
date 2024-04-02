@@ -207,7 +207,7 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
                     json_logging_callback,
                 ],
             )
-            del X, y, (X_val, y_val
+            del X, y, X_val, y_val
         else:
             
             X, labels = load_training_data(
