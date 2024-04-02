@@ -242,6 +242,8 @@ def train_model(model, train_x_data, train_y_data, options, subcort_masks=None):
         )
     # second iteration (CNN2):
     # load training data based on CNN1 candidates
+    del X, y, labels
+    
     if options["train_2"]:
         net_model = "model_2"
         net_weights = (
