@@ -67,16 +67,16 @@ def function(options, test_val=0):
     options["train_folder"] = os.path.join(options["main_dir"], "data")
     options["train_lesions"] = os.path.join(options["main_dir"], "lesions")
     
-    datafile = "/app/examples/stratified_vol_loc_cv_nG.npy"
+    datafile = "/app/examples/stratified_vol_3_cv_nG.npy"
     
     split_dict = np.load(datafile, allow_pickle=True)
     train_list = split_dict[test_val].get('train')
     test_list = split_dict[test_val].get('val')
     
     options["load_checkpoint_1"] = True
-    options["load_checkpoint_2"] = False
-    # options['continue_training_2'] = True
-    # options['initial_epoch_2'] = 69
+    options["load_checkpoint_2"] = True
+    options['continue_training_2'] = True
+    options['initial_epoch_2'] = 30
 
     train_data, test_data = {}, {}
 
@@ -267,5 +267,5 @@ if __name__ == '__main__':
     options["out_dir"] = output_dir
     options["test_folder"] = output_dir
 
-    for i in [8,7,6,5,4,3,2,1]:
+    for i in [0,1,2]:
         function(options, test_val=i)
