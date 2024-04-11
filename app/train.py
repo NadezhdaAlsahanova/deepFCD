@@ -267,5 +267,5 @@ if __name__ == '__main__':
     options["out_dir"] = output_dir
     options["test_folder"] = output_dir
 
-    for i in [0,1,2]:
+    for i in [1,2]:
         function(options, test_val=i)
